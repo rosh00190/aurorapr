@@ -29,3 +29,5 @@ D. 올바른 예시:
 <div class="avatar-container char_avatar"></div>
 <div class="avatar-container user_avatar"></div>
 ```
+
+---
