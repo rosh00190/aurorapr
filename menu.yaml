@@ -1,0 +1,142 @@
+# 각 메뉴 카테고리를 정의합니다.
+categories:
+  # '자작 미니극장' 카테고리
+  - id: Originals
+    name: "✨ 자작 미니극장"
+    prompt: "'✨ 자작 미니극장'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "배달음식 리뷰"
+        file: 자작_배달리뷰
+      - name: "-실시간- 아파트 게시판"
+        file: 자작_실시간아파트게시판
+      - name: "관계 영역 모의고사"
+        file: 자작_수능모의고사
+      - name: "-모듈- 어몽어스"
+        file: 자작_모듈테스트어몽어스
+      - name: "-모듈- 계절 카페 【네게】"
+        file: 자작_모듈계절카페
+      - name: "-모듈- 관계 표준 계약서"
+        file: 자작_모듈관계표준계약서
+      - name: "-모듈- 우리FLIX"
+        file: 자작_모듈우리FLIX
+      - name: "-모듈- char 검색 기록"
+        file: 자작_모듈char검색기록
+      - name: "-모듈- 추억 카드 맞추기"
+        file: 자작_모듈추억카드맞추기
+      - name: "-모듈- 성격 스탯 재분배 시뮬레이터"
+        file: 자작_모듈성격스탯재분배
+      - name: "-모듈- 관계 가이드라인 설정"
+        file: 자작_모듈관계가이드라인설정
+      - name: "-모듈- 관계 특성 조합"
+        file: 자작_모듈관계특성조합
+      - name: "-모듈- 감정연성술"
+        file: 자작_모듈감정연성술
+      - name: "연애 재난 생존수칙"
+        file: 자작_연애재난수칙
+      - name: "-모듈- 권태기사막에서 살아남기"
+        file: 자작_모듈권태기사막
+      - name: "-모듈- char 렌탈 상품"
+        file: 자작_모듈char렌탈상품
+      - name: "궁합 테스트"
+        file: 자작_궁합테스트
+
+  # '미디어/앱 시뮬레이션' 카테고리
+  - id: MediaSim
+    name: "📱 미디어/앱 시뮬레이션"
+    prompt: "'미디어/앱 시뮬레이션'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "소셜 포럼"
+        file: 소셜포럼
+      - name: "AI 채팅 시뮬레이션"
+        file: AI채팅시뮬
+      - name: "감성 라디오"
+        file: 감성라디오
+      - name: "연애 영감"
+        file: 연애영감
+      - name: "가십 보도"
+        file: 가십보도
+      - name: "감시카메라"
+        file: 감시카메라
+
+  # '유명 IP 및 방송 패러디' 카테고리
+  - id: IpParody
+    name: "📺 유명 IP 및 방송 패러디"
+    prompt: "'유명 IP 및 방송 패러디'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "포켓몬"
+        file: 포켓몬
+      - name: "역전재판"
+        file: 역전재판
+      - name: "심즈"
+        file: 심즈
+      - name: "우리 결혼했어요"
+        file: 우결
+      - name: "환승연애"
+        file: 환승연애
+
+  # '게임 및 직접 경쟁' 카테고리
+  - id: Games
+    name: "⚔️ 게임 및 직접 경쟁"
+    prompt: "'게임 및 직접 경쟁'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "크라임씬 게임"
+        file: 크라임씬
+      - name: "게임"
+        file: 게임
+      - name: "경쟁"
+        file: 경쟁
+
+  # '캐릭터 탐구 및 감성 표현' 카테고리
+  - id: CharExplore
+    name: "📖 캐릭터 탐구 및 감성 표현"
+    prompt: "'캐릭터 탐구 및 감성 표현'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "캐릭터의 회상"
+        file: 캐릭터의회상
+      - name: "어린 시절 캐릭터"
+        file: 캐릭터어린시절
+      - name: "계절 엽서"
+        file: 계절엽서
+
+  # '창작 및 커스터마이징' 카테고리
+  - id: Creation
+    name: "🎨 창작 및 커스터마이징"
+    prompt: "'창작 및 커스터마이징'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "스티커 붙이기"
+        file: 스티커붙이기
+      - name: "옷 갈아입히기"
+        file: 옷갈아입히기
+      - name: "만화"
+        file: 만화
+
+  # '일상 아이템 공개' 카테고리
+  - id: ItemReveal
+    name: "🔞 일상 아이템 공개"
+    prompt: "'일상 아이템 공개'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "오늘의 속옷"
+        file: 오늘의속옷
+      - name: "오늘의 콘돔"
+        file: 오늘의콘돔
+      - name: "야릇한"
+        file: 야릇한
+
+  # '시스템 및 메타적 분석' 카테고리
+  - id: SystemMeta
+    name: "⚙️ 시스템 및 메타적 분석"
+    prompt: "'시스템 및 메타적 분석'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "시스템"
+        file: 시스템메타분석
+
+# static_menus: (아래와 같이 변경)
+# id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
+static_menus:
+  - id: random
+    name: "🎲 랜덤박스 미니극장"
+    file: "랜덤박스"  # 랜덤박스는 다른 동적 메뉴와 동일한 메커니즘을 사용하므로 file 속성을 유지합니다.
+  - id: settings
+    name: "⚙️ 캐릭터 설정"
+  - id: custom
+    name: "✍️ 커스텀 상황 입력"
