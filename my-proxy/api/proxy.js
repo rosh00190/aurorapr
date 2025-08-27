@@ -1,38 +1,45 @@
 // 이 파일 하나가 우리의 프록시 서버 전체입니다.
 export default async function handler(request, response) {
   
-  // 1. 스크립트가 보내는 요청에서 '?file=' 뒤의 파일 경로를 읽습니다.
-  // 예: /api/proxy?file=orora/daily.txt  -> 'orora/daily.txt'
+  // ▼▼▼▼▼ [수정됨] CORS 허용 헤더 추가 ▼▼▼▼▼
+  // 어느 동네(Origin)에서 온 요청이든 허용합니다.
+  response.setHeader('Access-Control-Allow-Origin', '*');
+  // GET과 OPTIONS 메소드 요청을 허용합니다.
+  response.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  // 특정 헤더를 포함한 요청을 허용합니다.
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // OPTIONS 요청은 CORS 사전 확인용이므로, 바로 200 OK로 응답합니다.
+  if (request.method === 'OPTIONS') {
+    return response.status(200).end();
+  }
+  // ▲▲▲▲▲ [수정됨] CORS 허용 헤더 추가 ▲▲▲▲▲
+
   const filePath = request.query.file;
 
-  // 파일 경로가 없으면 오류 메시지를 보냅니다.
   if (!filePath) {
     return response.status(400).send('Error: file parameter is missing.');
   }
 
-  // 2. 실제 프롬프트가 저장된 GitHub Raw 파일의 URL을 조립합니다.
-  // ★★ 이 부분의 '사용자이름/저장소이름'을 당신의 정보로 바꾸세요. ★★
-  const targetUrl = `https://rosh00190.github.io/aurorapr/${filePath}`;
-
-
-
+  // ★★ 이 부분의 '사용자이름/저장소이름'이 정확한지 다시 한번 확인하세요! ★★
+  // 2. [404 해결] 당신의 저장소에 있는 '파일 원본(Raw) 주소'를 사용합니다.
+  // ★★ 'github.io'가 아닌 'raw.githubusercontent.com'을 사용해야 합니다. ★★
+  const targetUrl = `https://raw.githubusercontent.com/rosh00190/aurorapr/main/${filePath}`;
 
   try {
-    // 3. Vercel 서버가 당신을 대신해 GitHub로 파일을 요청합니다.
     const githubResponse = await fetch(targetUrl);
 
-    // GitHub에서 파일을 찾지 못하는 등 문제가 생기면 오류를 그대로 전달합니다.
     if (!githubResponse.ok) {
+      // GitHub가 404를 반환하면, 그 상태 그대로 전달하여 원인을 파악하기 쉽게 합니다.
       return response.status(githubResponse.status).send(githubResponse.statusText);
     }
 
-    // 4. GitHub로부터 성공적으로 받아온 파일 내용을 스크립트에게 전달합니다.
     const fileContent = await githubResponse.text();
+    // 이미 위에서 설정했으므로, 이 헤더는 중복될 수 있어 여기서도 명시합니다.
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return response.status(200).send(fileContent);
 
   } catch (error) {
-    // 네트워크 문제 등 예상치 못한 오류 처리
     console.error(error);
     return response.status(500).send('Proxy server internal error.');
   }
