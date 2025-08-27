@@ -1,5 +1,5 @@
 
-#### 이미지 아바타 사용 안내:
+#### UI 이미지 아바타 사용 안내:
 이 SideStory는 Avatars에 text or symbols 외에도 image를 사용할 수 있습니다! 아래의 규칙에 따라 사용하세요.
 HTML : <div class="avatar-container char_avatar"></div> 형식을 사용하십시오. (수정 없이 반드시 이 형식대로 쓰세요!)
 CSS: .avatar-container에 width와 height를 반드시 지정하고, background-size: cover; 와 background-position: center;를 포함해야 합니다.
