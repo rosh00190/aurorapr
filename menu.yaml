@@ -97,6 +97,8 @@ categories:
         file: 캐릭터어린시절
       - name: "계절 엽서"
         file: 계절엽서
+      - name: "시스템"
+        file: 시스템메타분석
 
   # '창작 및 커스터마이징' 카테고리
   - id: Creation
@@ -122,14 +124,14 @@ categories:
       - name: "야릇한"
         file: 야릇한
 
-  # '시스템 및 메타적 분석' 카테고리
+  # '테스트' 카테고리
   - id: SystemMeta
-    name: "⚙️ 시스템 및 메타적 분석"
+    name: "🧪 시스템 및 메타적 분석"
     prompt: "'시스템 및 메타적 분석'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "시스템"
-        file: 시스템메타분석
-
+      - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
+        file: 테스트_운명궁합_2md
+        
 # static_menus: (아래와 같이 변경)
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
