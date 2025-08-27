@@ -1,0 +1,13 @@
+(필수 준수: 이미지 아바타 기술 명세)
+이 SideStory는 캐릭터 이미지를 사용하는 아바타를 포함합니다. 아래의 기술 규칙을 단 하나도 빠짐없이 엄격하게 준수하여 아바타를 구현해야 합니다.
+
+[이미지 아바타 구현 가이드]
+
+A. HTML 구조:
+- 아바타 요소는 `<div>`를 사용하며, 정확히 두 개의 클래스 이름(예: `<div class="avatar-container char_avatar"></div>`)을 가져야 합니다. `.avatar-container`는 스타일링, `.char_avatar` 또는 `.user_avatar`는 이미지 주입용입니다.
+
+B. CSS 스타일링:
+- `.avatar-container` 클래스에는 필수 속성인 `width`, `height`, `background-size: cover;`, `background-position: center;`를 반드시 포함해야 합니다.
+
+C. 핵심 금지 규칙:
+- 당신의 코드에서 `.char_avatar` 또는 `.user_avatar` 클래스에 절대로 `background-image` 속성을 직접 설정해서는 안 됩니다.```
