@@ -1,5 +1,6 @@
-(필수 준수: 이미지 아바타 기술 명세)
-이 SideStory는 캐릭터 이미지를 사용하는 아바타를 포함합니다. 아래의 기술 규칙을 단 하나도 빠짐없이 엄격하게 준수하여 아바타를 구현해야 합니다.
+
+#### 아바타 사용 방식 변경 안내:
+이 SideStory는 아바타에 텍스트, 기호 대신 이미지를 사용할 수 있습니다. 사용시에는 아래의 기술 규칙을 단 하나도 빠짐없이 엄격하게 준수하여 아바타를 구현해야 합니다.
 
 [이미지 아바타 구현 가이드]
 
@@ -11,3 +12,20 @@ B. CSS 스타일링:
 
 C. 핵심 금지 규칙:
 - 당신의 코드에서 `.char_avatar` 또는 `.user_avatar` 클래스에 절대로 `background-image` 속성을 직접 설정해서는 안 됩니다.```
+
+D. 올바른 예시:
+```code
+<style>
+  .avatar-container {
+    width: 100px; /* 원하는 너비 */
+    height: 100px; /* 원하는 높이 */
+    background-size: cover; /* 이미지가 div를 꽉 채우도록 */
+    background-position: center; /* 이미지 중앙 정렬 */
+    border-radius: 50%; /* 원형으로 만들기 (선택) */
+    border: 2px solid black; /* 테두리 (선택) */
+  }
+</style>
+
+<div class="avatar-container char_avatar"></div>
+<div class="avatar-container user_avatar"></div>
+```
