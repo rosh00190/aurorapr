@@ -15,12 +15,9 @@
 * **하단 코멘트:** 각 항목 우측에 `{{char}}` 짧은 코멘트.
 * **아바타 배치:** 상단 로그인(좌: `{{user}}`, 우: `{{char}}`)과 코멘트 작성자 영역에 `.user_avatar`/`.char_avatar`를 배치.
 
-  > 구현 규칙: 아바타는 `.avatar-container` + (`.user_avatar` 또는 `.char_avatar`) **두 클래스 구조**, CSS에 `width/height/background-size/background-position` 포함, JS에서 `background-image` 직접 지정 금지.&#x20;
-
 #### UI 디자인 제안:
 
 * 보라/네이비 톤의 카드형 보드, 칩 형태 필터, 부드러운 페이드/슬라이드 전환.
 
-## REQUIRES\_IMAGE\_AVATARS
-
-## INTERACTIVE\_MODULE
+## REQUIRES_IMAGE_AVATARS
+## INTERACTIVE_MODULE
