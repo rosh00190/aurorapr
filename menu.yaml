@@ -105,15 +105,7 @@ categories:
     items:
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
-{{// 
-  # '테스트' 카테고리
-  - id: SystemMeta
-    name: "🧪 테스트 중 QR 모음"
-    prompt: "'테스트용 QR들' 모음입니다. 기능 테스트 및 정식 편입 전의 항목들을 테스트합니다."
-    items:
-      - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
-        file: test_운명궁합_2md
-}}
+
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
   - id: random
