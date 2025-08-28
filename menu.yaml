@@ -28,7 +28,7 @@ categories:
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
-    name: "🧠 캐릭터 탐구"
+    name: "🔎 캐릭터 탐구"
     prompt: "'캐릭터 탐구'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "성격 스탯 재분배 시뮬레이터"
@@ -70,7 +70,7 @@ categories:
 
   # '장르 IP 패러디' 카테고리
   - id: IpParody
-    name: "📺 장르 IP 패러디"
+    name: "🤹 장르 IP 패러디"
     prompt: "'장르 IP 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "어몽어스"
