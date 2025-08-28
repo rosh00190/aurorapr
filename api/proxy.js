@@ -16,6 +16,16 @@ export default async function handler(request, response) {
   // ▲▲▲▲▲ [수정됨] CORS 허용 헤더 추가 ▲▲▲▲▲
 
   const filePath = request.query.file;
+    // ▼▼▼▼▼ [수정됨] branch 쿼리 파라미터 읽기 ▼▼▼▼▼
+    // 요청 URL에서 branch 값을 가져옵니다. 없으면 'main'을 기본값으로 사용합니다.
+    const branchName = request.query.branch || 'main';
+
+    // 간단한 유효성 검사: 영문, 숫자, 하이픈(-), 언더스코어(_)만 허용하여 보안 강화
+    const isValidBranchName = /^[a-zA-Z0-9_-]+$/.test(branchName);
+    if (!isValidBranchName) {
+        return response.status(400).send('Error: Invalid branch name specified.');
+    }
+    // ▲▲▲▲▲ [수정됨] branch 쿼리 파라미터 읽기 ▲▲▲▲▲
 
   if (!filePath) {
     return response.status(400).send('Error: file parameter is missing.');
@@ -50,7 +60,9 @@ export default async function handler(request, response) {
   // ★★ 이 부분의 '사용자이름/저장소이름'이 정확한지 다시 한번 확인하세요! ★★
   // 2. [404 해결] 당신의 저장소에 있는 '파일 원본(Raw) 주소'를 사용합니다.
   // ★★ 'github.io'가 아닌 'raw.githubusercontent.com'을 사용해야 합니다. ★★
-  const targetUrl = `https://raw.githubusercontent.com/rosh00190/aurorapr/main/${filePath}`;
+ 
+    // 하드코딩된 'main' 대신, 파라미터로 받은 branchName을 사용합니다.
+    const targetUrl = `https://raw.githubusercontent.com/rosh00190/aurorapr/${branchName}/${filePath}`;
 
   try {
     const githubResponse = await fetch(targetUrl);

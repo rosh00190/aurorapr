@@ -3,6 +3,7 @@
     
     // 디버그 모드 플래그 (true: 상세 로그 출력+관리자용 설정창, false: 중요 로그만 출력)
     const DEBUG_MODE = true;
+    const IS_TESTER_MODE = false; // ▼▼▼▼▼ [수정됨] 테스터 모드 플래그 신설 ▼▼▼▼▼
 
     // --- 설정 영역 ---
     
@@ -31,6 +32,10 @@
     if (DEBUG_MODE) {
     toastr.info(LOG_TAG + ' 스크립트가 로드되었습니다.');
 }
+if (DEBUG_MODE && IS_TESTER_MODE) { // 테스터 모드일 때 알림 추가
+    toastr.warning(LOG_TAG + ' 🧪 테스트 모드로 실행 중입니다.');
+}
+
 
     // --- 헬퍼 함수 ---
     // 중앙화된 로깅 함수
@@ -403,7 +408,12 @@
         * @returns {string} - 프록시 서버에 요청할 전체 URL
         */
        function getProxiedUrl(filePath) {
-           return `${PROXY_SERVER_URL}?file=${filePath}`;
+           //return `${PROXY_SERVER_URL}?file=${filePath}`;
+           // IS_TESTER_MODE 값에 따라 사용할 브랜치 이름을 결정합니다.
+           // false면 'main', true면 'dev' 브랜치를 사용합니다.
+           const branch = IS_TESTER_MODE ? 'dev' : 'main';
+           // 쿼리 파라미터로 file과 branch 정보를 함께 넘깁니다.
+           return `${PROXY_SERVER_URL}?file=${filePath}&branch=${branch}`;
        }
 
        
@@ -441,204 +451,204 @@
         return processedText;
     }
 
-    
-    /**
- * 완전히 새로 작성한 중첩 랜덤 처리 함수
- * 실제 괄호 매칭과 재귀적 처리를 통해 안정성을 극대화했습니다.
- */
-function processCustomRandom(text) {
-    if (!text || typeof text !== 'string') return '';
-    
-    let result = text;
-    let maxIterations = 50;
-    let iteration = 0;
-    
-    // 무한루프 방지를 위한 처리
-    while (iteration < maxIterations) {
-        const processed = processSingleLevel(result);
-        if (processed === result) {
-            // 더 이상 변화가 없으면 종료
-            break;
-        }
-        result = processed;
-        iteration++;
-    }
-    
-    if (iteration >= maxIterations) {
-        console.warn('최대 반복 횟수 도달. 무한루프 방지를 위해 처리를 중단합니다.');
-    }
-    
-    return result;
-}
-
-/**
- * 한 번에 하나의 가장 안쪽 랜덤 구문만 처리합니다.
- */
-function processSingleLevel(text) {
-    // 모든 {{ 위치를 찾아서 랜덤 구문인지 확인
-    let pos = 0;
-    let deepestRandom = null;
-    let maxDepth = -1;
-    
-    while (pos < text.length - 6) { // 최소 "{{랜덤::" 길이
-        const openPos = text.indexOf('{{', pos);
-        if (openPos === -1) break;
         
-        // 랜덤 구문인지 확인
-        const randomInfo = checkRandomPattern(text, openPos);
-        if (randomInfo) {
-            const closePos = findMatchingClose(text, openPos);
-            if (closePos !== -1) {
-                const depth = calculateNestingDepth(text, openPos, closePos);
-                if (depth > maxDepth) {
-                    maxDepth = depth;
-                    deepestRandom = {
-                        start: openPos,
-                        end: closePos,
-                        patternLength: randomInfo.patternLength
-                    };
+        /**
+     * 완전히 새로 작성한 중첩 랜덤 처리 함수
+     * 실제 괄호 매칭과 재귀적 처리를 통해 안정성을 극대화했습니다.
+     */
+    function processCustomRandom(text) {
+        if (!text || typeof text !== 'string') return '';
+        
+        let result = text;
+        let maxIterations = 50;
+        let iteration = 0;
+        
+        // 무한루프 방지를 위한 처리
+        while (iteration < maxIterations) {
+            const processed = processSingleLevel(result);
+            if (processed === result) {
+                // 더 이상 변화가 없으면 종료
+                break;
+            }
+            result = processed;
+            iteration++;
+        }
+        
+        if (iteration >= maxIterations) {
+            console.warn('최대 반복 횟수 도달. 무한루프 방지를 위해 처리를 중단합니다.');
+        }
+        
+        return result;
+    }
+
+    /**
+     * 한 번에 하나의 가장 안쪽 랜덤 구문만 처리합니다.
+     */
+    function processSingleLevel(text) {
+        // 모든 {{ 위치를 찾아서 랜덤 구문인지 확인
+        let pos = 0;
+        let deepestRandom = null;
+        let maxDepth = -1;
+        
+        while (pos < text.length - 6) { // 최소 "{{랜덤::" 길이
+            const openPos = text.indexOf('{{', pos);
+            if (openPos === -1) break;
+            
+            // 랜덤 구문인지 확인
+            const randomInfo = checkRandomPattern(text, openPos);
+            if (randomInfo) {
+                const closePos = findMatchingClose(text, openPos);
+                if (closePos !== -1) {
+                    const depth = calculateNestingDepth(text, openPos, closePos);
+                    if (depth > maxDepth) {
+                        maxDepth = depth;
+                        deepestRandom = {
+                            start: openPos,
+                            end: closePos,
+                            patternLength: randomInfo.patternLength
+                        };
+                    }
                 }
+            }
+            
+            pos = openPos + 2;
+        }
+        
+        // 가장 깊은 중첩의 랜덤 구문을 처리
+        if (deepestRandom) {
+            const content = text.substring(
+                deepestRandom.start + deepestRandom.patternLength, 
+                deepestRandom.end - 2
+            );
+            const replacement = selectRandomOption(content);
+            
+            return text.substring(0, deepestRandom.start) + 
+                replacement + 
+                text.substring(deepestRandom.end);
+        }
+        
+        return text; // 더 이상 처리할 랜덤 구문이 없음
+    }
+
+    /**
+     * 랜덤 패턴인지 확인하고 패턴 정보를 반환합니다.
+     */
+    function checkRandomPattern(text, pos) {
+        const patterns = [
+            '{{랜덤::',
+            '{{random::'
+        ];
+        
+        for (const pattern of patterns) {
+            if (text.substr(pos, pattern.length).toLowerCase() === pattern.toLowerCase()) {
+                return { patternLength: pattern.length };
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 정확한 괄호 매칭을 통해 닫는 }} 위치를 찾습니다.
+     */
+    function findMatchingClose(text, startPos) {
+        let braceCount = 1; // 시작 {{
+        let pos = startPos + 2;
+        
+        while (pos < text.length - 1 && braceCount > 0) {
+            if (text.substr(pos, 2) === '{{') {
+                braceCount++;
+                pos += 2;
+            } else if (text.substr(pos, 2) === '}}') {
+                braceCount--;
+                pos += 2;
+            } else {
+                pos++;
             }
         }
         
-        pos = openPos + 2;
+        return braceCount === 0 ? pos : -1;
     }
-    
-    // 가장 깊은 중첩의 랜덤 구문을 처리
-    if (deepestRandom) {
-        const content = text.substring(
-            deepestRandom.start + deepestRandom.patternLength, 
-            deepestRandom.end - 2
-        );
-        const replacement = selectRandomOption(content);
+
+    /**
+     * 중첩 깊이를 계산합니다. 더 깊은 중첩일수록 먼저 처리해야 합니다.
+     */
+    function calculateNestingDepth(text, start, end) {
+        const content = text.substring(start, end);
+        let depth = 0;
+        let pos = 0;
         
-        return text.substring(0, deepestRandom.start) + 
-               replacement + 
-               text.substring(deepestRandom.end);
-    }
-    
-    return text; // 더 이상 처리할 랜덤 구문이 없음
-}
-
-/**
- * 랜덤 패턴인지 확인하고 패턴 정보를 반환합니다.
- */
-function checkRandomPattern(text, pos) {
-    const patterns = [
-        '{{랜덤::',
-        '{{random::'
-    ];
-    
-    for (const pattern of patterns) {
-        if (text.substr(pos, pattern.length).toLowerCase() === pattern.toLowerCase()) {
-            return { patternLength: pattern.length };
-        }
-    }
-    return null;
-}
-
-/**
- * 정확한 괄호 매칭을 통해 닫는 }} 위치를 찾습니다.
- */
-function findMatchingClose(text, startPos) {
-    let braceCount = 1; // 시작 {{
-    let pos = startPos + 2;
-    
-    while (pos < text.length - 1 && braceCount > 0) {
-        if (text.substr(pos, 2) === '{{') {
-            braceCount++;
-            pos += 2;
-        } else if (text.substr(pos, 2) === '}}') {
-            braceCount--;
-            pos += 2;
-        } else {
-            pos++;
-        }
-    }
-    
-    return braceCount === 0 ? pos : -1;
-}
-
-/**
- * 중첩 깊이를 계산합니다. 더 깊은 중첩일수록 먼저 처리해야 합니다.
- */
-function calculateNestingDepth(text, start, end) {
-    const content = text.substring(start, end);
-    let depth = 0;
-    let pos = 0;
-    
-    while (pos < content.length - 6) {
-        const randomPos = content.indexOf('{{랜덤::', pos);
-        const randomPos2 = content.indexOf('{{random::', pos);
-        
-        let nextPos = -1;
-        if (randomPos !== -1 && randomPos2 !== -1) {
-            nextPos = Math.min(randomPos, randomPos2);
-        } else if (randomPos !== -1) {
-            nextPos = randomPos;
-        } else if (randomPos2 !== -1) {
-            nextPos = randomPos2;
+        while (pos < content.length - 6) {
+            const randomPos = content.indexOf('{{랜덤::', pos);
+            const randomPos2 = content.indexOf('{{random::', pos);
+            
+            let nextPos = -1;
+            if (randomPos !== -1 && randomPos2 !== -1) {
+                nextPos = Math.min(randomPos, randomPos2);
+            } else if (randomPos !== -1) {
+                nextPos = randomPos;
+            } else if (randomPos2 !== -1) {
+                nextPos = randomPos2;
+            }
+            
+            if (nextPos === -1) break;
+            
+            depth++;
+            pos = nextPos + 8; // "{{랜덤::" 길이만큼 건너뛰기
         }
         
-        if (nextPos === -1) break;
-        
-        depth++;
-        pos = nextPos + 8; // "{{랜덤::" 길이만큼 건너뛰기
+        return depth;
     }
-    
-    return depth;
-}
 
-/**
- * 랜덤 선택을 수행합니다.
- */
-function selectRandomOption(content) {
-    if (!content) return '';
-    
-    // :: 로 분할하되, 중첩된 {{}} 내부의 ::는 분할하지 않도록 주의
-    const options = smartSplit(content, '::');
-    
-    if (options.length === 0) return '';
-    
-    const randomIndex = Math.floor(Math.random() * options.length);
-    return options[randomIndex].trim();
-}
+    /**
+     * 랜덤 선택을 수행합니다.
+     */
+    function selectRandomOption(content) {
+        if (!content) return '';
+        
+        // :: 로 분할하되, 중첩된 {{}} 내부의 ::는 분할하지 않도록 주의
+        const options = smartSplit(content, '::');
+        
+        if (options.length === 0) return '';
+        
+        const randomIndex = Math.floor(Math.random() * options.length);
+        return options[randomIndex].trim();
+    }
 
-/**
- * 중첩된 {{}} 구조를 고려하여 스마트하게 :: 로 분할합니다.
- */
-function smartSplit(text, delimiter) {
-    const result = [];
-    let current = '';
-    let braceCount = 0;
-    let i = 0;
-    
-    while (i < text.length) {
-        if (text.substr(i, 2) === '{{') {
-            braceCount++;
-            current += text.substr(i, 2);
-            i += 2;
-        } else if (text.substr(i, 2) === '}}') {
-            braceCount--;
-            current += text.substr(i, 2);
-            i += 2;
-        } else if (text.substr(i, delimiter.length) === delimiter && braceCount === 0) {
-            // 중첩되지 않은 상태에서만 분할
+    /**
+     * 중첩된 {{}} 구조를 고려하여 스마트하게 :: 로 분할합니다.
+     */
+    function smartSplit(text, delimiter) {
+        const result = [];
+        let current = '';
+        let braceCount = 0;
+        let i = 0;
+        
+        while (i < text.length) {
+            if (text.substr(i, 2) === '{{') {
+                braceCount++;
+                current += text.substr(i, 2);
+                i += 2;
+            } else if (text.substr(i, 2) === '}}') {
+                braceCount--;
+                current += text.substr(i, 2);
+                i += 2;
+            } else if (text.substr(i, delimiter.length) === delimiter && braceCount === 0) {
+                // 중첩되지 않은 상태에서만 분할
+                result.push(current);
+                current = '';
+                i += delimiter.length;
+            } else {
+                current += text[i];
+                i++;
+            }
+        }
+        
+        if (current) {
             result.push(current);
-            current = '';
-            i += delimiter.length;
-        } else {
-            current += text[i];
-            i++;
         }
+        
+        return result;
     }
-    
-    if (current) {
-        result.push(current);
-    }
-    
-    return result;
-}
 
     /**
      * @description URL의 텍스트 콘텐츠를 가져옵니다. 캐시를 활용합니다.
