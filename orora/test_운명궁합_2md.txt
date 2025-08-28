@@ -18,5 +18,5 @@
 -   질문과 답변 선택지는 사용자가 쉽게 누를 수 있도록 크고 명확한 버튼 형태로 디자인합니다.
 -   최종 결과 카드가 나타날 때는 부드럽게 떠오르는 애니메이션을 적용하여 극적인 효과를 줍니다.
 
-//# REQUIRES_IMAGE_AVATARS
-//# INTERACTIVE_MODULE
+## REQUIRES_IMAGE_AVATARS
+## INTERACTIVE_MODULE

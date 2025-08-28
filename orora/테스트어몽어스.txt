@@ -18,4 +18,4 @@
 -   캐릭터 아바타는 원색의 단순한 형태로 표현하고, 각 캐릭터의 발언은 말풍선으로 표시하여 토론의 현장감을 높입니다.
 
 
-//# INTERACTIVE_MODULE
+## INTERACTIVE_MODULE

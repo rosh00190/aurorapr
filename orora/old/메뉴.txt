@@ -101,7 +101,7 @@ You will strictly wrap all generated side stories in the following fixed format.
 Now, begin generating the interactive module according to the given instructions." |
     /try {:
 	
-        /if left={{var::variablePrompt}} right="//# INTERACTIVE_MODULE" rule=in else={:
+        /if left={{var::variablePrompt}} right="## INTERACTIVE_MODULE" rule=in else={:
             /gen lock=on "{{var::topPrompt}}{{var::variablePrompt}}{{var::bottomPrompt}}" 
         :} {:
             /run 오로라소극장.InteractionTemplate |

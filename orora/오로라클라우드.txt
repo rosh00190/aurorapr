@@ -34,5 +34,5 @@
 *   **레이아웃:** 구글 드라이브나 드롭박스처럼 직관적이고 깔끔한 UI를 지향합니다. 사용자가 쉽게 파일을 누르고 내용을 확인할 수 있도록 디자인합니다.
 *   **애니메이션:** 파일을 클릭했을 때 팝업창이 부드럽게 떠오르거나(fade-in), 닫을 때 스르르 사라지는 등의 미세한 애니메이션을 적용하여 세련미를 더합니다.
 
-//# REQUIRES_IMAGE_AVATARS
-//# INTERACTIVE_MODULE
+## REQUIRES_IMAGE_AVATARS
+## INTERACTIVE_MODULE
