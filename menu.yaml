@@ -33,6 +33,10 @@ categories:
     items:
       - name: "성격 스탯 재분배 시뮬레이터"
         file: 성격스탯재분배
+      - name: "마음 탐구 보고서"
+        file: 마음탐구보고서
+      - name: "비밀 장바구니 훔쳐보기"
+        file: 장바구니훔쳐보기
 
   # '관계 진단' 카테고리
   - id: RelationshipDiagnosis
@@ -47,6 +51,8 @@ categories:
         file: 수능모의고사
       - name: "관계 가이드라인 설정"
         file: 관계가이드라인설정
+      - name: "우리의 하루 리포트: 타임라인 보드"
+        file: 우리하루리포트
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
@@ -81,6 +87,10 @@ categories:
     name: "🎮 게임"
     prompt: "'게임'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "가위바위보"
+        file: 가위바위보
+      - name: "틱택토"
+        file: 틱택토
       - name: "CYOA"
         file: CYOA
       - name: "스마트폰 비번 해제"
