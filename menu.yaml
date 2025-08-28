@@ -97,6 +97,8 @@ categories:
         file: 틱택토
       - name: "스마트폰 비번 해제"
         file: 비번해제
+      - name: "추억 카드 맞추기"
+        file: 추억카드맞추기
 
   # '창작' 카테고리
   - id: Creation
@@ -124,8 +126,6 @@ categories:
         file: 캐릭터스탯창
       - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
         file: test_운명궁합_2md
-      - name: "추억 카드 맞추기"
-        file: 추억카드맞추기
       - name: "궁합 테스트"
         file: 궁합테스트
 
