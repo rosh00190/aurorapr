@@ -79,6 +79,8 @@ categories:
     name: "🤹 장르 IP 패러디"
     prompt: "'장르 IP 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "포켓몬스터 배틀"
+        file: 포켓몬_배틀
       - name: "동물의 숲 프로필"
         file: 동물의숲_여권
       - name: "페르소나 아르카나"
