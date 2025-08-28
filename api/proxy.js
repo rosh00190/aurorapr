@@ -21,6 +21,32 @@ export default async function handler(request, response) {
     return response.status(400).send('Error: file parameter is missing.');
   }
 
+    // ▼▼▼▼▼ [보안 강화] 허용된 파일 목록 ▼▼▼▼▼
+    // 이 목록에 있는 파일 또는 이 패턴으로 시작하는 파일만 허용합니다.
+    const allowedFiles = [
+        'menu.yaml',
+        'top_prompt.txt',
+        'bottom_prompt.txt',
+        'interactive_module_prompt.txt',
+        'image_avatar_specs_prompt.txt'
+    ];
+
+    const allowedPrefixes = [
+        'orora/' // 'orora/' 폴더 하위의 모든 파일을 허용
+    ];
+
+    const isAllowed = allowedFiles.includes(filePath) || 
+                      allowedPrefixes.some(prefix => filePath.startsWith(prefix));
+    
+    // 경로 조작 공격 방지 (../, ./ 등 포함 시 차단)
+    const containsPathTraversal = filePath.includes('../') || filePath.includes('./');
+
+    if (!isAllowed || containsPathTraversal) {
+        // 허용되지 않은 파일 요청 시 403 Forbidden 응답
+        return response.status(403).send('Error: Access to this file is denied.');
+    }
+    // ▲▲▲▲▲ [보안 강화] 코드 끝 ▲▲▲▲▲
+	
   // ★★ 이 부분의 '사용자이름/저장소이름'이 정확한지 다시 한번 확인하세요! ★★
   // 2. [404 해결] 당신의 저장소에 있는 '파일 원본(Raw) 주소'를 사용합니다.
   // ★★ 'github.io'가 아닌 'raw.githubusercontent.com'을 사용해야 합니다. ★★
