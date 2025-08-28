@@ -24,7 +24,7 @@ export default async function handler(request, response) {
     ];
 
     const allowedPrefixes = [
-        'orora/' 
+        'orora/' ,
         'functions/' 
     ];
 
