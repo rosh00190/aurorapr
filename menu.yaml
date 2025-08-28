@@ -57,6 +57,7 @@ categories:
     name: "🎭 상황극"
     prompt: "'상황극'의 세부 컨텐츠를 선택해주세요."
     items:
+    #char 반응 바로바로 띄우게
       - name: "CYOA"
         file: CYOA
       - name: "연애 재난 생존수칙"
