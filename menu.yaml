@@ -117,6 +117,8 @@ categories:
     name: "🧪 테스트 중 QR 모음"
     prompt: "'테스트용 QR들' 모음입니다. 기능 테스트 및 정식 편입 전의 항목들을 테스트합니다."
     items:
+      - name: "마음 해킹 ACCESS DENIED: HEART_DRIVE"
+        file: 마음해킹
       - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
         file: test_운명궁합_2md
 
