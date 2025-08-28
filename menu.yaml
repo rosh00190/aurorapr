@@ -79,6 +79,8 @@ categories:
     name: "🤹 장르 IP 패러디"
     prompt: "'장르 IP 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "페르소나 아르카나"
+        file: 페르소나_아르카나
       - name: "어몽어스"
         file: 테스트어몽어스
 
