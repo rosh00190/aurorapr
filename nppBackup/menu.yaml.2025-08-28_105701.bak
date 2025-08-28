@@ -8,13 +8,13 @@ categories:
       - name: "우리FLIX"
         file: 우리FLIX
       - name: "char 검색 기록"
-        file: 검색기록
+        file: char검색기록
       - name: "배달음식 리뷰"
         file: 배달리뷰
       - name: "오로라 클라우드"
         file: 오로라클라우드
       - name: "char 렌탈 상품"
-        file: 렌탈상품
+        file: char렌탈상품
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: ContentParody
