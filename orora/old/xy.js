@@ -145,13 +145,6 @@
             // --- 2. 모든 STscript 클로저 정의 ---
             const definitionBlocks = [];
     
-                    
-            const CONSTANTS = {
-                LABELS: {
-                    RETURN_TO_MAIN: '↩️ 목록으로 돌아가기',
-                }
-            };
-            
 
 
             const triggerLogic = `/let triggerOroraJs {:
@@ -175,7 +168,7 @@
     /if left={{pipe}} right="" rule=eq {: /setglobalvar key=orora_lang_setting 한국어 :} |
 	
 	
-    /buttons labels=["한국어(기본값)", "English(영어)", "日本語(일본어)", "简体中文(중국어 간체)", "수동설정", "${CONSTANTS.LABELS.RETURN_TO_MAIN}"] 현재 설정된 언어 : {{getglobalvar::orora_lang_setting}} | 
+    /buttons labels=["한국어(기본값)", "English(영어)", "日本語(일본어)", "简体中文(중국어 간체)", "수동설정", "↩️ 목록으로 돌아가기"] 현재 설정된 언어 : {{getglobalvar::orora_lang_setting}} | 
     /let choice {{pipe}} |
     /if left={{var::choice}} right="" rule=eq {: /echo ❌ 선택이 취소되었습니다. | /abort :} |
 	
@@ -190,7 +183,7 @@
     /setglobalvar key=orora_lang_setting {{var::customName}} |
     /echo 🌐 언어 설정이 '{{var::customName}}'(으)로 변경되었습니다.
     :} | 
-    /if left={{var::choice}} right="${CONSTANTS.LABELS.RETURN_TO_MAIN}" rule=eq {: /:mainMenu :}
+    /if left={{var::choice}} right="↩️ 목록으로 돌아가기" rule=eq {: /:mainMenu :}
 :}`;
                     definitionBlocks.push(auroralangSettingsMenu);
 
@@ -248,7 +241,7 @@
                 JSON.stringify("➕ 북마크 추가"),
                 JSON.stringify("🗑️ 북마크 삭제"), 
                 JSON.stringify("수동설정"),
-                JSON.stringify(CONSTANTS.LABELS.RETURN_TO_MAIN)
+                JSON.stringify("↩️ 목록으로 돌아가기")
             ].join(', ');
 
             const settingsMenuIfs = [
@@ -266,7 +259,7 @@
                 
                 /if left={{var::choice}} right="➕ 북마크 추가" rule=eq {: /:addBookmark :} | 
                 /if left={{var::choice}} right="🗑️ 북마크 삭제" rule=eq {: /:deleteBookmarkMenu :} | 
-                /if left={{var::choice}} right="${CONSTANTS.LABELS.RETURN_TO_MAIN}" rule=eq {: /:mainMenu :}`
+                /if left={{var::choice}} right="↩️ 목록으로 돌아가기" rule=eq {: /:mainMenu :}`
             ].join(' | \n');
 
             const auroraSettingsScript = `
@@ -313,13 +306,13 @@
             for (const category of menuConfig.categories) {
                 const subMenuLabels = [
                     ...category.items.map(item => JSON.stringify(item.name)),
-                    JSON.stringify(CONSTANTS.LABELS.RETURN_TO_MAIN)
+                    JSON.stringify("↩️ 목록으로 돌아가기")
                 ].join(', ');
                 
                 const subMenuIfs = category.items.map(item => 
                     `/if left={{var::choice}} right=${JSON.stringify(item.name)} rule=eq {: /pass ${item.file} | /:triggerOroraJs :}`
                 );
-                subMenuIfs.push(`/if left={{var::choice}} right="${JSON.stringify(CONSTANTS.LABELS.RETURN_TO_MAIN)}" rule=eq {: /:mainMenu :}`);
+                subMenuIfs.push(`/if left={{var::choice}} right="↩️ 목록으로 돌아가기" rule=eq {: /:mainMenu :}`);
     
                 const subMenuScript = `/let select${category.id} {:
     /buttons labels=[${subMenuLabels}] "${category.prompt}" |
@@ -448,6 +441,38 @@
         return processedText;
     }
 
+    /**
+ * 자체 중첩 가능 랜덤 문법 [랜덤:A,B,C]를 처리하는 함수.
+ * @param {string} text - 처리할 전체 텍스트
+ * @returns {string} - 모든 [랜덤:...] 구문이 처리된 텍스트
+ */
+function processCustomRandom(text) {
+    if (!text) return '';
+
+    // 가장 안쪽에 있는 {{랜덤:...}} 구문을 찾는 정규식으로 변경
+    // 키워드를 '랜덤'에서 '랜덤'으로, 괄호를 []에서 {{}}로 변경
+    const innermostRandomRegex = /\{\{랜덤::([^\{\}]+?)\}\}/g;
+
+    let processedText = text;
+
+    while (innermostRandomRegex.test(processedText)) {
+        logger.debug('랜덤 처리 중...');
+        processedText = processedText.replace(innermostRandomRegex, (match, optionsString) => {
+            // 이제 {{random}}과 동일하게 콜론(:) 또는 이중 콜론(::)을 모두 지원하도록 수정
+            const list = optionsString.includes('::')
+                ? optionsString.split('::')
+                : optionsString.split(':').map(item => item.trim());
+
+            if (list.length === 0) return '';
+            
+            const randomIndex = Math.floor(Math.random() * list.length);
+            logger.debug(`랜덤 선택: ${list[randomIndex]}`);
+            return list[randomIndex];
+        });
+    }
+
+    return processedText;
+}
     /**
      * @description URL의 텍스트 콘텐츠를 가져옵니다. 캐시를 활용합니다.
      * @param {string} url - 가져올 파일의 전체 URL.
@@ -584,8 +609,14 @@
                     // 나중에 새로운 모듈이 생기면 여기에 한 줄만 추가하면 됩니다.
                 };
 
+                
                 // 2. middlePrompt를 복사하여, 이 변수를 계속 수정해 나갑니다.
                 let processedMiddlePrompt = middlePrompt;
+
+                logger.debug('랜덤 처리 전:', processedMiddlePrompt);
+                // [신규] 스크립트 자체 랜덤 처리.
+                processedMiddlePrompt = processCustomRandom(processedMiddlePrompt);
+                logger.debug('랜덤 처리 후:', processedMiddlePrompt);
 
                 // 3. 정의된 모든 모듈 식별자에 대해 반복 작업을 수행합니다.
                 for (const [trigger, fileName] of Object.entries(moduleTriggers)) {
