@@ -89,7 +89,7 @@ categories:
     name: "🎨 창작"
     prompt: "'창작'의 세부 컨텐츠를 선택해주세요."
     items: []
-
+{{// 
   # '테스트' 카테고리
   - id: SystemMeta
     name: "🧪 테스트 중 QR 모음"
@@ -97,7 +97,7 @@ categories:
     items:
       - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
         file: test_운명궁합_2md
-
+}}
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
   - id: random
