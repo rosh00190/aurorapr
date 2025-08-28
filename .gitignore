@@ -1,0 +1,9 @@
+# Notepad++ 자동 백업 폴더 무시
+nppBackup/
+orora/nppBackup/
+
+# 확장자가 .bak 인 파일들 무시
+*.bak
+
+# 특정 패턴의 백업 파일 무시
+*backup*
