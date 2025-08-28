@@ -81,6 +81,8 @@ categories:
     name: "🎮 게임"
     prompt: "'게임'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "CYOA"
+        file: CYOA
       - name: "추억 카드 맞추기"
         file: 추억카드맞추기
 
