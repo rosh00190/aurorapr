@@ -2,29 +2,35 @@
 categories:
   # '플랫폼/서비스 시뮬레이션' 카테고리
   - id: PlatformSim
-    name: "🖥️ 플랫폼/서비스 시뮬레이션"
+    name: "🖥️ 플랫폼/서비스"
     prompt: "'플랫폼/서비스 시뮬레이션'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "우리FLIX"
         file: 우리FLIX
-      - name: "char 검색 기록"
-        file: 검색기록
-      - name: "배달음식 리뷰"
-        file: 배달리뷰
       - name: "오로라 클라우드"
         file: 오로라클라우드
-      - name: "char 렌탈 상품"
+      - name: "char 판매 페이지"
         file: 렌탈상품
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: ContentParody
-    name: "📖 현실 컨텐츠 패러디"
+    name: "📖 현실 밀착형"
     prompt: "'현실 컨텐츠 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "-실시간- 아파트 게시판"
         file: 실시간아파트게시판
       - name: "관계 표준 계약서"
         file: 관계표준계약서
+
+  # '세계관 몰입' 카테고리
+  - id: WorldImmersion
+    name: "🌌 세계관 몰입"
+    prompt: "'세계관 몰입'의 세부 컨텐츠를 선택해주세요."
+    items:
+      - name: "계절 카페 【네게】"
+        file: 계절카페
+      - name: "감정연성술"
+        file: 감정연성술
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
@@ -43,8 +49,8 @@ categories:
     name: "📊 관계 진단"
     prompt: "'관계 진단'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "관계 특성 조합"
-        file: 관계특성조합
+      - name: "char 검색 기록"
+        file: 검색기록
       - name: "관계 영역 모의고사"
         file: 수능모의고사
       - name: "관계 가이드라인 설정"
@@ -62,18 +68,8 @@ categories:
         file: CYOA
       - name: "연애 재난 생존수칙"
         file: 연애재난수칙
-      - name: "권태기사막에서 살아남기"
-        file: 권태기사막
-
-  # '세계관 몰입' 카테고리
-  - id: WorldImmersion
-    name: "🌌 세계관 몰입"
-    prompt: "'세계관 몰입'의 세부 컨텐츠를 선택해주세요."
-    items:
-      - name: "계절 카페 【네게】"
-        file: 계절카페
-      - name: "감정연성술"
-        file: 감정연성술
+      - name: "관계 특성 조합"
+        file: 관계특성조합
 
   # '장르 IP 패러디' 카테고리
   - id: IpParody
@@ -129,6 +125,8 @@ categories:
         file: test_운명궁합_2md
       - name: "궁합 테스트"
         file: 궁합테스트
+      - name: "권태기사막에서 살아남기"
+        file: 권태기사막
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
