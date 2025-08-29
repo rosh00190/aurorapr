@@ -17,6 +17,7 @@ export default async function handler(request, response) {
   }
     const allowedFiles = [
         'menu.yaml',
+        'versions.json',
         'top_prompt.txt',
         'bottom_prompt.txt',
         'interactive_module_prompt.txt',
