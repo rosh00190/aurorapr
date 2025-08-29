@@ -40,7 +40,8 @@ return class DynamicMenu {
             // 데이터를 기반으로 메뉴 UI를 구성하는 STscript를 조립합니다.
             const stscriptCommand = this.#buildMenuScriptBlocks();
             
-            logger.debug("✅ 동적으로 생성된 '메뉴 표시용' 스크립트:", stscriptCommand);
+                logger.group("✅ 동적으로 생성된 '메뉴 표시용' 스크립트 (클릭하여 펼치기):", stscriptCommand);
+                
             
             // 완성된 메뉴 UI 스크립트를 실행합니다.
             await this.deps.triggerSlash(stscriptCommand);
@@ -442,9 +443,9 @@ ${mainIfClauses.join(' | \n    ')}
         }
 
         // 3. 랜덤 처리 (내부화된 메서드 사용)
-        logger.debug('middle 랜덤 처리 전:', processedPrompt);
+            logger.group('middle 랜덤 처리 전 (클릭하여 펼치기):', processedPrompt);
         processedPrompt = this.#processCustomRandom(processedPrompt);
-        logger.debug('middle 랜덤 처리 후:', processedPrompt);
+            logger.group('middle 랜덤 처리 후 (클릭하여 펼치기):', processedPrompt);
 
         return processedPrompt;
     }
@@ -489,8 +490,7 @@ ${mainIfClauses.join(' | \n    ')}
      */
     async #executeGeneration(finalPrompt) {
         const { logger, triggerSlash } = this.deps;
-        logger.debug("✅ 최종 프롬프트 정규화 완료. AI 생성 요청...");
-        logger.debug("생성될 프롬프트 내용:", finalPrompt);
+        logger.group("✅ 생성될 프롬프트 내용 (클릭하여 펼치기):", finalPrompt);
         // 최종 프롬프트 정규화는 여기서 한 번만 수행
         const normalizedPrompt = this.#normalizeText(finalPrompt);
         const finalScript = `
@@ -517,7 +517,7 @@ ${mainIfClauses.join(' | \n    ')}
 
 
         `            ;
-        logger.debug("실행될 최종 STscript:", finalScript);
+        logger.group("실행될 최종 STscript (클릭하여 펼치기):", finalScript);
         await triggerSlash(finalScript);
     }
 
