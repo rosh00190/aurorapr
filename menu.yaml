@@ -133,7 +133,7 @@ categories:
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
   - id: random
-    name: "🎲 랜덤박스 미니극장"
+    name: "t🎲 랜덤박스 미니극장"
     file: "_랜덤박스"
   - id: settings
     name: "⚙️ 캐릭터 설정"
