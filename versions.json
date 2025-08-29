@@ -5,7 +5,7 @@
   "bottom_prompt.txt": "1.0.0",
   
   "interactive_module_prompt.txt": "1.0.0",
-  "image_avatar_specs_prompt.txt": "1.0.0"
+  "image_avatar_specs_prompt.txt": "1.0.0",
   
   "functions/DynamicMenu.js": "1.0.0",
   "functions/ResponseCorrector.js": "1.0.0"
