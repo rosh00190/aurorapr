@@ -1,8 +1,9 @@
 return class ResponseCorrector {
     constructor(deps) {
         this.deps = deps;
-        this.isCorrecting = false;
-        this.characterName = null;
+        this.isCorrecting = false; // 중복 실행 방지를 위한 잠금 변수
+        this.activeCharName = null;
+        this.cachedCharacterName = null;
         this.assetCache = null;
     }
 
@@ -29,14 +30,19 @@ return class ResponseCorrector {
         this.deps.logger.debug('[CorrectorEngine] 교정 파이프라인을 시작합니다...');
         let correctedText = originalText;
 
+        // 파이프라인 1단계: CSS 교정 (동기)
         correctedText = this._correctCss(correctedText);
 
+        // 파이프라인 2단계 (조건부): 에셋 태그가 있을 때만 에셋 처리 (비동기)
         if (correctedText.includes('{{img::')) {
             this.deps.logger.debug('[CorrectorEngine] {{img::}} 태그가 감지되어 캐릭터 에셋 처리 파이프라인을 활성화합니다.');
             correctedText = await this._processCharacterAssets(correctedText);
         }
 
+        // 파이프라인 3단계: 기타 HTML 교정
         correctedText = this._correctHtml(correctedText);
+
+        // 파이프라인 4단계: JavaScript 교정
         correctedText = this._correctJs(correctedText);
 
         this.deps.logger.debug('[CorrectorEngine] 교정 파이프라인이 완료되었습니다.');
@@ -52,25 +58,29 @@ return class ResponseCorrector {
                 logger.warn("[CorrectorEngine] 현재 캐릭터 이름을 알 수 없어 에셋 캐싱을 건너뜁니다.");
                 return null;
             }
-
-            if (this.characterName !== currentCharacterName || !this.assetCache) {
+    
+            // 캐시가 비어있거나, 캐시의 주인이 현재 캐릭터와 다를 때만 새로고침
+            if (!this.assetCache || this.cachedCharacterName !== currentCharacterName) {
                 logger.debug(`[CorrectorEngine] '${currentCharacterName}' 캐릭터의 에셋 목록을 새로 가져옵니다...`);
-                this.characterName = currentCharacterName;
-                const response = await fetch(`/api/sprites/get?name=${encodeURIComponent(this.characterName)}`);
+                
+                const response = await fetch(`/api/sprites/get?name=${encodeURIComponent(currentCharacterName)}`);
                 if (!response.ok) {
                     logger.error(`[CorrectorEngine] 에셋 API 요청 실패. Status: ${response.status}`);
                     this.assetCache = null;
                     return null;
                 }
+
                 const assets = await response.json();
                 if (!Array.isArray(assets) || assets.length === 0) {
                     this.assetCache = new Set();
                 } else {
                     const fileNames = assets.map(asset => asset.path.split('/').pop().split('?')[0]);
-                    logger.group(`✅ [AssetList] '${this.characterName}' 캐릭터의 에셋 파일명 목록 (클릭하여 펼치기):`, fileNames);
+                    logger.group(`✅ [AssetList] '${currentCharacterName}' 캐릭터의 에셋 파일명 목록 (클릭하여 펼치기):`, fileNames);
                     this.assetCache = new Set(fileNames);
                     logger.debug(`[CorrectorEngine] 총 ${this.assetCache.size}개의 에셋을 캐시에 저장했습니다.`);
                 }
+                // 새로고침 후, 캐시의 주인이 누구인지 기록
+                this.cachedCharacterName = currentCharacterName;
             }
             return this.assetCache;
         } catch (error) {
@@ -89,7 +99,7 @@ return class ResponseCorrector {
             return content.replace(regex, (tag, fileName) => {
                 if (assetCache && !assetCache.has(fileName)) {
                     logger.warn(`스크립트 내 에셋 유효성 검사 실패: '${fileName}' 제거.`);
-                    return `${quote}#${quote}`;
+                    return `${quote}#${quote}`; // 유효하지 않으면 빈 경로('#')로 대체
                 }
                 const charNameForPath = this.activeCharName || 'unknown_character';
                 return `${quote}/characters/${charNameForPath}/${fileName}${quote}`;
@@ -106,14 +116,16 @@ return class ResponseCorrector {
         const customImgTagRegex = /\{\{img::(.*?)\}\}/gi;
 
         if (assetCache) {
+            // 성공 시: 유효성 검사 수행
             return htmlContent.replace(customImgTagRegex, (match, fileName) => {
                 if (assetCache.has(fileName)) {
-                    return `<img class="characterImage" src="/characters/${this.characterName}/${fileName}">`;
+                    return `<img class="characterImage" src="/characters/${this.activeCharName}/${fileName}">`;
                 }
                 logger.warn(`HTML 내 에셋 유효성 검사 실패: '${fileName}' 제거.`);
                 return '';
             });
         } else {
+            // 실패 시 (Fallback): 기본 변환 수행
             logger.warn('[CorrectorEngine] 에셋 목록 확인 불가. HTML 영역 Fallback 변환 실행.');
             const charNameForPath = this.activeCharName || 'unknown_character';
             return htmlContent.replace(customImgTagRegex, (match, fileName) => {
@@ -124,23 +136,26 @@ return class ResponseCorrector {
 
     async _processCharacterAssets(text) {
         const { logger } = this.deps;
-        logger.debug('[CorrectorEngine] 캐릭터 에셋 처리 단계를 시작합니다 (매니저 역할).');
+        logger.debug('[CorrectorEngine] 캐릭터 에셋 처리 단계를 시작합니다.');
 
         const assetCache = await this._getAssetCache();
         
+        // 1. 스크립트 블록 분리 및 처리
         const processedScripts = [];
         const textWithPlaceholders = text.replace(
             /<script\b[^>]*>([\s\S]*?)<\/script>/gi,
             (match, scriptContent) => {
-                logger.debug('[CorrectorEngine] 스크립트 블록 감지. 스크립트 전문가에게 처리를 위임합니다.');
+                logger.debug('[CorrectorEngine] 스크립트 블록 감지. 처리를 위임합니다.');
                 const processedContent = this._processScriptContent(scriptContent, assetCache);
                 processedScripts.push(processedContent);
                 return `<script>__SCRIPT_PLACEHOLDER_${processedScripts.length - 1}__</script>`;
             }
         );
 
+        // 2. 나머지 HTML 영역 처리
         const htmlProcessedText = this._processHtmlContent(textWithPlaceholders, assetCache);
 
+        // 3. 처리된 스크립트 블록 복원
         const finalResult = htmlProcessedText.replace(
             /<script>__SCRIPT_PLACEHOLDER_(\d+)__<\/script>/gi,
             (match, index) => {
@@ -153,6 +168,7 @@ return class ResponseCorrector {
     
     async processLastMessage(message_id, activeCharName) {
         this.activeCharName = activeCharName;
+
         if (this.isCorrecting) {
             return;
         }
@@ -174,8 +190,10 @@ return class ResponseCorrector {
                 return;
             }
 
+            // 무한 루프 방지를 위해 플래그를 즉시 해제
             await triggerSlash('/flushglobalvar orora_correction_pending');
             logger.debug(`[ResponseCorrector] 무한 루프 방지를 위해 교정 플래그를 즉시 해제합니다.`);
+            
             const originalText = latestMessage.message;
             logger.group('[ResponseCorrector] 원본 메시지 내용 (클릭하여 펼치기):', originalText);
 
@@ -196,6 +214,7 @@ return class ResponseCorrector {
         } catch (error) {
             logger.error('[ResponseCorrector] 메시지 처리 중 오류 발생:', error);
         } finally {
+            // 작업 성공 여부와 관계없이 반드시 잠금을 해제
             this.isCorrecting = false;
         }
     }
