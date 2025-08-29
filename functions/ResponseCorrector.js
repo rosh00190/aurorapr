@@ -44,14 +44,14 @@ return class ResponseCorrector {
     }
 
     async _getAssetCache() {
-        const { getCharData, logger } = this.deps;
+        const { logger } = this.deps;
         try {
-            const charData = await getCharData();
-            if (!charData || !charData.avatar) {
-                logger.warn("[CorrectorEngine] 현재 캐릭터를 찾을 수 없어 에셋 캐싱을 건너뜁니다.");
+            const currentCharacterName = this.activeCharName;
+
+            if (!currentCharacterName) {
+                logger.warn("[CorrectorEngine] 현재 캐릭터 이름을 알 수 없어 에셋 캐싱을 건너뜁니다.");
                 return null;
             }
-            const currentCharacterName = charData.avatar.replace(/\.[^/.]+$/, '');
 
             if (this.characterName !== currentCharacterName || !this.assetCache) {
                 logger.debug(`[CorrectorEngine] '${currentCharacterName}' 캐릭터의 에셋 목록을 새로 가져옵니다...`);
@@ -91,7 +91,7 @@ return class ResponseCorrector {
                     logger.warn(`스크립트 내 에셋 유효성 검사 실패: '${fileName}' 제거.`);
                     return `${quote}#${quote}`;
                 }
-                const charNameForPath = this.characterName || 'unknown_character';
+                const charNameForPath = this.activeCharName || 'unknown_character';
                 return `${quote}/characters/${charNameForPath}/${fileName}${quote}`;
             });
         };
@@ -115,7 +115,7 @@ return class ResponseCorrector {
             });
         } else {
             logger.warn('[CorrectorEngine] 에셋 목록 확인 불가. HTML 영역 Fallback 변환 실행.');
-            const charNameForPath = this.characterName || 'unknown_character';
+            const charNameForPath = this.activeCharName || 'unknown_character';
             return htmlContent.replace(customImgTagRegex, (match, fileName) => {
                 return `<img class="characterImage" src="/characters/${charNameForPath}/${fileName}">`;
             });
@@ -151,7 +151,8 @@ return class ResponseCorrector {
         return finalResult;
     }
     
-    async processLastMessage(message_id) {
+    async processLastMessage(message_id, activeCharName) {
+        this.activeCharName = activeCharName;
         if (this.isCorrecting) {
             return;
         }
@@ -175,7 +176,6 @@ return class ResponseCorrector {
 
             await triggerSlash('/flushglobalvar orora_correction_pending');
             logger.debug(`[ResponseCorrector] 무한 루프 방지를 위해 교정 플래그를 즉시 해제합니다.`);
-            
             const originalText = latestMessage.message;
             logger.group('[ResponseCorrector] 원본 메시지 내용 (클릭하여 펼치기):', originalText);
 
