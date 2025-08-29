@@ -2,7 +2,7 @@
 categories:
   # '플랫폼/서비스 시뮬레이션' 카테고리
   - id: PlatformSim
-    name: "🖥️ 플랫폼/서비스 시뮬레이션"
+    name: "🖥️ 플랫11폼/서비스 시뮬레이션"
     prompt: "'플랫폼/서비스 시뮬레이션'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "우리FLIX"
@@ -133,7 +133,7 @@ categories:
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
   - id: random
-    name: "t🎲 랜덤박스 미니극장"
+    name: "🎲 랜덤랜랜박스 미니극장"
     file: "_랜덤박스"
   - id: settings
     name: "⚙️ 캐릭터 설정"
