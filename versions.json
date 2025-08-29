@@ -7,6 +7,6 @@
   "interactive_module_prompt.txt": "1.0.0-dev",
   "image_avatar_specs_prompt.txt": "1.0.0-dev",
   
-  "functions/DynamicMenu.js": "1.0.0-dev",
+  "functions/DynamicMenu.js": "1.0.1-dev",
   "functions/ResponseCorrector.js": "1.0.0-dev"
 }

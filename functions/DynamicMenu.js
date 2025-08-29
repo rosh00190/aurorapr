@@ -6,7 +6,7 @@ return class DynamicMenu {
      */
     static CONSTANTS = {
         LABELS: {
-            RETURN_TO_MAIN: '↩️ 목록으로 돌아가기',
+            RETURN_TO_MAIN: '↩️ 목냥으로 돌아가기',
             RETURN_TO_SETTINGS: '↩️ 이전 메뉴로 돌아가기',
             CANCEL_SELECTION: '❌ 선택이 취소되었습니다.',
             CANCEL_INPUT: '❌ 입력이 취소되었습니다.',
