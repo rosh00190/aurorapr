@@ -15,10 +15,13 @@ export default async function handler(request, response) {
   }
   // ▲▲▲▲▲ [수정됨] CORS 허용 헤더 추가 ▲▲▲▲▲
 
-  const filePath = request.query.file;
+  const file = request.query.file;
+
+  const branch = request.query.branch;
+  const cache = request.query.cache;
     // ▼▼▼▼▼ [수정됨] branch 쿼리 파라미터 읽기 ▼▼▼▼▼
     // 요청 URL에서 branch 값을 가져옵니다. 없으면 'main'을 기본값으로 사용합니다.
-    const branchName = request.query.branch || 'main';
+  const branchName = branch || 'main';
 
     // 간단한 유효성 검사: 영문, 숫자, 하이픈(-), 언더스코어(_)만 허용하여 보안 강화
     const isValidBranchName = /^[a-zA-Z0-9_-]+$/.test(branchName);
@@ -27,7 +30,7 @@ export default async function handler(request, response) {
     }
     // ▲▲▲▲▲ [수정됨] branch 쿼리 파라미터 읽기 ▲▲▲▲▲
 
-  if (!filePath) {
+  if (!file) {
     return response.status(400).send('Error: file parameter is missing.');
   }
 
@@ -47,11 +50,11 @@ export default async function handler(request, response) {
         'functions/' 
     ];
 
-    const isAllowed = allowedFiles.includes(filePath) || 
-                      allowedPrefixes.some(prefix => filePath.startsWith(prefix));
+    const isAllowed = allowedFiles.includes(file) || 
+                      allowedPrefixes.some(prefix => file.startsWith(prefix));
     
     // 경로 조작 공격 방지 (../, ./ 등 포함 시 차단)
-    const containsPathTraversal = filePath.includes('../') || filePath.includes('./');
+    const containsPathTraversal = file.includes('../') || file.includes('./');
 
     if (!isAllowed || containsPathTraversal) {
         // 허용되지 않은 파일 요청 시 403 Forbidden 응답
