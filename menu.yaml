@@ -14,25 +14,17 @@ categories:
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: ContentParody
-    name: "📖 현실 밀착형"
+    name: "🌌 현실 밀착(세계관 몰입)형"
     prompt: "'현실 컨텐츠 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "-실시간- 아파트 게시판"
-        file: 실시간아파트게시판
+      - name: "아파트 게시판"
+        file: 실시간_아파트게시판
       - name: "계절 카페 【네게】"
         file: 계절카페
       - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
         file: 비창가스케치
       - name: "관계 표준 계약서"
         file: 관계표준계약서
-
-  # '세계관 몰입' 카테고리
-  - id: WorldImmersion
-    name: "🌌 세계관 몰입"
-    prompt: "'세계관 몰입'의 세부 컨텐츠를 선택해주세요."
-    items:
-      - name: "감정연성술"
-        file: 감정연성술
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
@@ -43,6 +35,8 @@ categories:
         file: 마음탐구보고서
       - name: "비밀 장바구니 훔쳐보기"
         file: 장바구니훔쳐보기
+      - name: "char 검색 기록"
+        file: 검색기록
         #가끔 터미널이 안뜨네
       - name: "마음 해킹 ACCESS DENIED: HEART_DRIVE"
         file: 마음해킹
@@ -54,14 +48,14 @@ categories:
     name: "📊 관계 진단"
     prompt: "'관계 진단'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "char 검색 기록"
-        file: 검색기록
       - name: "관계 영역 모의고사"
         file: 수능모의고사
-      - name: "관계 가이드라인 설정"
-        file: 관계가이드라인설정
       - name: "우리의 하루 리포트: 타임라인 보드"
         file: 우리하루리포트
+      - name: "관계 가이드라인 설정하기"
+        file: 관계가이드라인설정
+      - name: "연애 재난 생존수칙"
+        file: 연애재난수칙
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
@@ -71,8 +65,6 @@ categories:
     #char 반응 바로바로 띄우게
       - name: "CYOA"
         file: CYOA
-      - name: "연애 재난 생존수칙"
-        file: 연애재난수칙
       - name: "관계 특성 조합"
         file: 관계특성조합
 
@@ -83,10 +75,10 @@ categories:
     items:
       - name: "포켓몬스터 배틀"
         file: 포켓몬_배틀
-      - name: "동물의 숲 프로필"
-        file: 동물의숲_여권
       - name: "어몽어스"
         file: 테스트어몽어스
+      - name: "동물의 숲 프로필"
+        file: 동물의숲_여권
 
   # '게임' 카테고리
   - id: Games
@@ -104,9 +96,11 @@ categories:
 
   # '창작' 카테고리
   - id: Creation
-    name: "🎨 창작"
+    name: "🎨 기타-종합"
     prompt: "'창작'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "감정연성술"
+        file: 감정연성술
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
 
