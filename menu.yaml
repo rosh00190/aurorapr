@@ -23,8 +23,8 @@ categories:
         file: 계절카페
       - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
         file: 비창가스케치
-      - name: "관계 표준 계약서"
-        file: 관계표준계약서
+      - name: "긴급 기자회견"
+        file: 긴급기자회견
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
@@ -56,6 +56,8 @@ categories:
         file: 관계가이드라인설정
       - name: "연애 재난 생존수칙"
         file: 연애재난수칙
+      - name: "관계 표준 계약서"
+        file: 관계표준계약서
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
