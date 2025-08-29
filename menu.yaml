@@ -109,27 +109,6 @@ categories:
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
 
-  # '테스트' 카테고리
-  - id: SystemMeta
-    name: "🧪 테스트 중 QR 모음"
-    prompt: "'테스트용 QR들' 모음입니다. 기능 테스트 및 정식 편입 전의 항목들을 테스트합니다."
-    items:
-        #가끔 터미널이 안뜨네
-      - name: "마음 해킹 ACCESS DENIED: HEART_DRIVE"
-        file: 마음해킹
-        #각각 더 자세한 스타일가이드. 랜덤 활용으로 블럭단위 가능
-      - name: "페르소나 아르카나"
-        file: 페르소나_아르카나
-        #감성은 마음에 드는데 현재 너무 고정적이구만
-      - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
-        file: 비창가스케치
-      - name: "char의 스탯창"
-        file: 캐릭터스탯창
-      - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
-        file: test_운명궁합_2md
-      - name: "궁합 테스트"
-        file: 궁합테스트
-
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
   - id: random
