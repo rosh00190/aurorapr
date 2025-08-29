@@ -47,6 +47,12 @@ export default async function handler(request, response) {
     }
 
     const fileContent = await githubResponse.text();
+	if (cache === 'off') {
+		response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+		response.setHeader('Pragma', 'no-cache');
+		response.setHeader('Expires', '0');
+	}
+	
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return response.status(200).send(fileContent);
 
