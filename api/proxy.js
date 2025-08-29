@@ -35,6 +35,7 @@ export default async function handler(request, response) {
     // 이 목록에 있는 파일 또는 이 패턴으로 시작하는 파일만 허용합니다.
     const allowedFiles = [
         'menu.yaml',
+        'versions.json',
         'top_prompt.txt',
         'bottom_prompt.txt',
         'interactive_module_prompt.txt',
@@ -74,6 +75,18 @@ export default async function handler(request, response) {
     }
 
     const fileContent = await githubResponse.text();
+	
+	
+    // --- [핵심 수정] 조건부 캐시 헤더 설정 ---
+    // URL에 'cache=off' 파라미터가 있을 때만 Vercel 캐시를 비활성화합니다.
+    if (cache === 'off') {
+        response.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+        response.setHeader('Pragma', 'no-cache');
+        response.setHeader('Expires', '0');
+    }
+    // 'cache=off'가 없으면, 아무런 캐시 헤더를 설정하지 않습니다.
+    // -> Vercel의 기본 캐시 정책 (CDN 5~6분 캐시)이 자동으로 적용됩니다.
+	
     // 이미 위에서 설정했으므로, 이 헤더는 중복될 수 있어 여기서도 명시합니다.
     response.setHeader('Content-Type', 'text/plain; charset=utf-8');
     return response.status(200).send(fileContent);
