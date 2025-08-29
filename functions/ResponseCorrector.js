@@ -117,7 +117,7 @@
                 // [변경] 원본과 교정본이 다를 경우에만 메시지를 수정하고, 항상 숨김 처리합니다.
                 const updatePayload = {
                     message_id: latestMessage.message_id,
-                    is_hidden: true,
+                    //is_hidden: true,
                 };
 
                     // 2. 내용이 변경되었을 경우에만 'message' 속성을 추가합니다.

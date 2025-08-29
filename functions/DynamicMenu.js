@@ -508,7 +508,7 @@ ${mainIfClauses.join(' | \n    ')}
                 /echo title="생성 실패" severity=error "AI가 비어있는 응답을 반환했습니다. API 상태를 확인하거나 다시 시도해주세요." |
                 /abort
             :} {:
-                /sendas name={{char}} {{var::generatedContent}}
+                /sendas name={{char}} {{var::generatedContent}} | /hide {{lastMessageID}}
             :}
         :} | /catch {:
             /setglobalvar key=orora_correction_pending false |
