@@ -107,7 +107,7 @@ categories:
         file: 즉흥동화
 
   # '현실 컨텐츠 패러디' 카테고리
-  - id: ContentParody
+  - id: WorldImmersion
     name: "📖 전용구역"
     prompt: "'특정 조건'이 있을때 사용가능한 컨텐츠입니다.."
     items:
