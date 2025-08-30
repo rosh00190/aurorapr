@@ -9,8 +9,6 @@ categories:
         file: 우리FLIX
       - name: "char 검색 기록"
         file: 검색기록
-      - name: "배달음식 리뷰"
-        file: 배달리뷰
       - name: "오로라 클라우드"
         file: 오로라클라우드
       - name: "char 렌탈 상품"
@@ -58,7 +56,7 @@ categories:
     prompt: "'상황극'의 세부 컨텐츠를 선택해주세요."
     items:
     #char 반응 바로바로 띄우게
-      - name: "CYOA"
+      - name: "포인트형 CYOA"
         file: CYOA
       - name: "연애 재난 생존수칙"
         file: 연애재난수칙
@@ -82,7 +80,7 @@ categories:
     items:
       - name: "포켓몬스터 배틀"
         file: 포켓몬_배틀
-      - name: "동물의 숲 프로필"
+      - name: "동물의 숲 여권"
         file: 동물의숲_여권
       - name: "어몽어스"
         file: 테스트어몽어스
