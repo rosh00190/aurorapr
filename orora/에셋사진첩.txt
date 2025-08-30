@@ -4,4 +4,4 @@
 
 당신의 역할은 {{char}}와 {{user}}의 추억을 바탕으로 사진첩을 만드는 것입니다.
 
-//## ASSET_DRIVEN_UI
+## ASSET_DRIVEN_UI
