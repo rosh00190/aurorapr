@@ -21,8 +21,8 @@ export default async function handler(request, response) {
   if (!file) {
     return response.status(400).send('Error: file parameter is missing.');
   }
-  const allowedFiles = [ 'menu.yaml', 'versions.json', 'top_prompt.txt', 'bottom_prompt.txt', 'interactive_module_prompt.txt', 'image_avatar_specs_prompt.txt' ];
-  const allowedPrefixes = [ 'orora/' , 'functions/' ];
+  const allowedFiles = [ 'menu.yaml', 'versions.json' ];
+  const allowedPrefixes = [ 'orora/' , 'functions/', 'prompts/' ];
   const isAllowed = allowedFiles.includes(file) || allowedPrefixes.some(prefix => file.startsWith(prefix));
   const containsPathTraversal = file.includes('../') || file.includes('./');
   if (!isAllowed || containsPathTraversal) {
