@@ -424,7 +424,8 @@ ${mainIfClauses.join(' | \n    ')}
         // 1. 처리할 모듈들을 '식별자: 파일명' 형태로 매핑합니다.
         const moduleTriggers = {
             '## INTERACTIVE_MODULE': 'interactive_module_prompt.txt',
-            '## REQUIRES_IMAGE_AVATARS': 'image_avatar_specs_prompt.txt'
+            '## REQUIRES_IMAGE_AVATARS': 'image_avatar_specs_prompt.txt',                
+            '## ASSET_DRIVEN_UI': 'asset_driven_ui_specs_prompt.txt'
         };
 
         // 2. 정의된 모든 모듈 식별자에 대해 반복 작업을 수행합니다.

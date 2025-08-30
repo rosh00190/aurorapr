@@ -85,53 +85,72 @@ return class ResponseCorrector {
         }
     }
 
-    _processScriptContent(scriptContent, assetCache) {
-        const { logger } = this.deps;
-        let processedContent = scriptContent;
+    
+        _processScriptContent(scriptContent, assetCache) {
+            const { logger } = this.deps;
+            let processedContent = scriptContent;
 
-        const replaceInScript = (content, quote) => {
-            const regex = new RegExp(`${quote}\\{\\{img::(.*?)\\}\\}${quote}`, 'gi');
-            return content.replace(regex, (tag, fileName) => {
-                if (assetCache && !assetCache.has(fileName)) {
-                    logger.warn(`스크립트 내 에셋 유효성 검사 실패: '${fileName}' 제거.`);
-                    return `${quote}<!-- Invalid Asset: ${fileName} -->${quote}`; 
-                }
+            const replaceInScript = (content, quote) => {
+                const regex = new RegExp(`${quote}\\{\\{img::(.*?)\\}\\}${quote}`, 'gi');
+                return content.replace(regex, (match, fileName) => {
+                    if (assetCache && !assetCache.has(fileName.trim())) {
+                        logger.warn(`스크립트 내 에셋 유효성 검사 실패: '${fileName.trim()}' 제거.`);
+                        return `${quote}<!-- Invalid Asset: ${fileName.trim()} -->${quote}`;
+                    }
 
-                const charNameForPath = this.activeCharName || 'unknown_character';
-                const imageUrl = `/characters/${charNameForPath}/${fileName}`;
-                const imgTag = `<img class="characterImage" src="${imageUrl}">`;
+                    const charNameForPath = this.activeCharName || 'unknown_character';
+                    const imageUrl = `/characters/${charNameForPath}/${fileName.trim()}`;
+                    const imgTag = `<img class="characterImage" src="${imageUrl}">`;
 
-                const escapedImgTag = imgTag.replace(/"/g, '\\"').replace(/'/g, "\\'");
+                    const escapedImgTag = imgTag.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/'/g, "\\'");
 
-                return `${quote}${escapedImgTag}${quote}`;
-            });
-        };
+                    logger.debug(`[CorrectorEngine] 스크립트 내 에셋 처리 결과: ${escapedImgTag}`);
+                    return `${quote}${escapedImgTag}${quote}`;
+                });
+            };
 
-        processedContent = replaceInScript(processedContent, "'");
-        processedContent = replaceInScript(processedContent, '"');
-        return processedContent;
-    }
-
-    _processHtmlContent(htmlContent, assetCache) {
-        const { logger } = this.deps;
-        const customImgTagRegex = /\{\{img::(.*?)\}\}/gi;
-
-        if (assetCache) {
-            return htmlContent.replace(customImgTagRegex, (match, fileName) => {
-                if (assetCache.has(fileName)) {
-                    return `<img class="characterImage" src="/characters/${this.activeCharName}/${fileName}">`;
-                }
-                logger.warn(`HTML 내 에셋 유효성 검사 실패: '${fileName}' 제거.`);
-                return '';
-            });
-        } else {
-            logger.warn('[CorrectorEngine] 에셋 목록 확인 불가. HTML 영역 Fallback 변환 실행.');
-            const charNameForPath = this.activeCharName || 'unknown_character';
-            return htmlContent.replace(customImgTagRegex, (match, fileName) => {
-                return `<img class="characterImage" src="/characters/${charNameForPath}/${fileName}">`;
-            });
+            processedContent = replaceInScript(processedContent, "'");
+            processedContent = replaceInScript(processedContent, '"');
+            return processedContent;
         }
-    }
+
+        _processHtmlContent(htmlContent, assetCache) {
+            const { logger } = this.deps;
+            let processedText = htmlContent;
+
+            const imgSrcRegex = /(<img[^>]*\ssrc\s*=\s*["'])([^"']*\{\{img::(.*?)\}\}[^"']*)(["'][^>]*>)/gi;
+            
+            processedText = processedText.replace(imgSrcRegex, (match, pre, content, fileName, post) => {
+                if (assetCache && !assetCache.has(fileName.trim())) {
+                    logger.warn(`HTML img src 내 에셋 유효성 검사 실패: '${fileName.trim()}' 제거.`);
+                    return `${pre}#${post}`;
+                }
+                
+                const charNameForPath = this.activeCharName || 'unknown_character';
+                const imageUrl = `/characters/${charNameForPath}/${fileName.trim()}`;
+                const newContent = content.replace(/\{\{img::(.*?)\}\}/gi, imageUrl);
+                
+                logger.debug(`[CorrectorEngine] HTML img src 속성 내 처리 결과: ${pre}${newContent}${post}`);
+                return `${pre}${newContent}${post}`;
+            });
+
+            const standaloneRegex = /\{\{img::(.*?)\}\}/gi;
+            
+            processedText = processedText.replace(standaloneRegex, (match, fileName) => {
+                if (assetCache && !assetCache.has(fileName.trim())) {
+                    logger.warn(`HTML 독립 에셋 유효성 검사 실패: '${fileName.trim()}' 제거.`);
+                    return `<!-- Invalid Asset: ${fileName.trim()} -->`;
+                }
+                
+                const charNameForPath = this.activeCharName || 'unknown_character';
+                const imageUrl = `/characters/${charNameForPath}/${fileName.trim()}`;
+                
+                logger.debug(`[CorrectorEngine] HTML 독립 img 에셋 처리 결과: <img class="characterImage" src="${imageUrl}">`);
+                return `<img class="characterImage" src="${imageUrl}">`;
+            });
+
+            return processedText;
+        }
 
     async _processCharacterAssets(text) {
         const { logger } = this.deps;

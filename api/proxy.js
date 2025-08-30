@@ -38,16 +38,13 @@ export default async function handler(request, response) {
     // 이 목록에 있는 파일 또는 이 패턴으로 시작하는 파일만 허용합니다.
     const allowedFiles = [
         'menu.yaml',
-        'versions.json',
-        'top_prompt.txt',
-        'bottom_prompt.txt',
-        'interactive_module_prompt.txt',
-        'image_avatar_specs_prompt.txt'
+        'versions.json'
     ];
 
     const allowedPrefixes = [
         'orora/', // 'orora/' 폴더 하위의 모든 파일을 허용
-        'functions/' 
+        'functions/' , 
+        'prompts/'
     ];
 
     const isAllowed = allowedFiles.includes(file) || 
