@@ -13,7 +13,7 @@ categories:
         file: 렌탈상품
 
   # '현실 컨텐츠 패러디' 카테고리
-  - id: ContentParody
+  - id: WorldInReal
     name: "🌌 현실 밀착(세계관 몰입)형"
     prompt: "'현실 컨텐츠 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
@@ -97,7 +97,7 @@ categories:
         file: 추억카드맞추기
 
   # '창작' 카테고리
-  - id: Creation
+  - id: EtcGroup
     name: "🎨 기타-종합"
     prompt: "'창작'의 세부 컨텐츠를 선택해주세요."
     items:
@@ -107,7 +107,7 @@ categories:
         file: 즉흥동화
 
   # '현실 컨텐츠 패러디' 카테고리
-  - id: WorldImmersion
+  - id: RestrictedZone
     name: "📖 전용구역"
     prompt: "'특정 조건'이 있을때 사용가능한 컨텐츠입니다.."
     items:

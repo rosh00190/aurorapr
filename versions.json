@@ -1,12 +1,13 @@
 {
-  "menu.yaml": "1.0.11-dev",
+  "menu.yaml": "1.2.0-dev",
   
-  "prompts/top_prompt.txt": "1.1.0-dev",
-  "prompts/bottom_prompt.txt": "1.1.0-dev",
+  "prompts/top_prompt.txt": "1.2.0-dev",
+  "prompts/bottom_prompt.txt": "1.2.0-dev",
   
-  "prompts/modules/interactive_module_prompt.txt": "1.1.0-dev",
-  "prompts/modules/image_avatar_specs_prompt.txt": "1.1.0-dev",
+  "prompts/modules/interactive_module_prompt.txt": "1.2.0-dev",
+  "prompts/modules/image_avatar_specs_prompt.txt": "1.2.0-dev",
+  "prompts/modules/asset_driven_ui_specs_prompt.txt": "1.2.0-dev",
   
-  "functions/DynamicMenu.js": "1.1.0-dev",
-  "functions/ResponseCorrector.js": "1.1.31-dev"
+  "functions/DynamicMenu.js": "1.2.0-dev",
+  "functions/ResponseCorrector.js": "1.2.0-dev"
 }
