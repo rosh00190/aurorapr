@@ -1,3 +1,5 @@
+//## ASSET_DRIVEN_UI
+
 지금부터 'pollinations.ai' 이미지 생성 규칙은 무시하고, 'Keyword List'의 파일명을 사용해 창의적인 UI를 만듭니다.
 
 **[매우 중요: 이미지 플레이스홀더 사용에 대한 최종 규칙]**

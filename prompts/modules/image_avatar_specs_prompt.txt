@@ -1,3 +1,4 @@
+//## REQUIRES_IMAGE_AVATARS
 
 #### UI 이미지 아바타 사용 안내:
 이 SideStory는 Avatars에 text or symbols 외에도 image를 사용할 수 있습니다! 아래의 규칙에 따라 사용하세요.

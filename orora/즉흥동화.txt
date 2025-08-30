@@ -18,4 +18,4 @@
 * 대화형 입력창.
 * 완성된 동화는 하단에 ‘책 페이지’ 스타일로 표시.
 
-## INTERACTIVE\_MODULE
+## INTERACTIVE_MODULE
