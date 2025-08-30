@@ -185,6 +185,32 @@ return class ResponseCorrector {
         return finalResult;
     }
 
+    
+    _playSoundEffect() {
+        const { logger } = this.deps;
+        try {
+
+            const context = parent.SillyTavern.getContext();
+            const playSoundSetting = context.powerUserSettings.play_message_sound;
+            const playUnfocusedSetting = context.powerUserSettings.play_sound_unfocused;
+            const hasFocus = parent.document.hasFocus();
+
+            if (!playSoundSetting) {
+                return;
+            }
+            if (playUnfocusedSetting && hasFocus) {
+                logger.debug("사운드 재생 결과: '배경 소리만'이 켜져 있고 탭이 활성화 상태라 종료합니다.");
+                return;
+            }
+
+            logger.debug("사운드 재생 결과: 모든 조건을 통과하여 소리를 재생합니다!");
+            audioSelect({type: 'ambient'}, '/sounds/message.mp3');
+
+        } catch (error) {
+            logger.error('[ResponseCorrector] 사운드 재생 중 오류 발생:', error);
+        }
+    }
+
     async processLastMessage(message_id, activeCharName) {
         this.activeCharName = activeCharName;
         if (this.isCorrecting) {
@@ -225,6 +251,8 @@ return class ResponseCorrector {
             } else {
                 logger.debug(`[ResponseCorrector] 내용 변경 없음.`);
             }
+            //v1.1.0 - 실리 사양 메세지 사운드 재생
+            this._playSoundEffect();
 
             logger.debug(`[ResponseCorrector] 메시지 ID [${message_id}] 후처리 완료.`);
         } catch (error) {
