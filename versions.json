@@ -1,5 +1,5 @@
 {
-  "menu.yaml": "1.1.0",
+  "menu.yaml": "1.0.0",
   
   "prompts/top_prompt.txt": "1.1.0",
   "prompts/bottom_prompt.txt": "1.1.0",
