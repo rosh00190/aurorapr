@@ -2,53 +2,62 @@
 categories:
   # '플랫폼/서비스 시뮬레이션' 카테고리
   - id: PlatformSim
-    name: "🖥️ 플랫폼/서비스 시뮬레이션"
+    name: "🖥️ 플랫폼/서비스"
     prompt: "'플랫폼/서비스 시뮬레이션'의 세부 컨텐츠를 선택해주세요."
     items:
       - name: "우리FLIX"
         file: 우리FLIX
-      - name: "char 검색 기록"
-        file: 검색기록
       - name: "오로라 클라우드"
         file: 오로라클라우드
-      - name: "char 렌탈 상품"
+      - name: "【판매상품 - char】"
         file: 렌탈상품
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: ContentParody
-    name: "📖 현실 컨텐츠 패러디"
+    name: "🌌 현실 밀착(세계관 몰입)형"
     prompt: "'현실 컨텐츠 패러디'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "-실시간- 아파트 게시판"
-        file: 실시간아파트게시판
-      - name: "관계 표준 계약서"
-        file: 관계표준계약서
+      - name: "아파트 게시판"
+        file: 실시간_아파트게시판
+      - name: "계절 카페 【네게】"
+        file: 계절카페
+      - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
+        file: 비창가스케치
+      - name: "긴급 기자회견"
+        file: 긴급기자회견
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
     name: "🔎 캐릭터 탐구"
     prompt: "'캐릭터 탐구'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "성격 스탯 재분배 시뮬레이터"
-        file: 성격스탯재분배
       - name: "마음 탐구 보고서"
         file: 마음탐구보고서
       - name: "비밀 장바구니 훔쳐보기"
         file: 장바구니훔쳐보기
+      - name: "char 검색 기록"
+        file: 검색기록
+        #가끔 터미널이 안뜨네
+      - name: "마음 해킹 ACCESS DENIED: HEART_DRIVE"
+        file: 마음해킹
+      - name: "성격 스탯 재분배 시뮬레이터"
+        file: 성격스탯재분배
 
   # '관계 진단' 카테고리
   - id: RelationshipDiagnosis
     name: "📊 관계 진단"
     prompt: "'관계 진단'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "관계 특성 조합"
-        file: 관계특성조합
       - name: "관계 영역 모의고사"
         file: 수능모의고사
-      - name: "관계 가이드라인 설정"
-        file: 관계가이드라인설정
       - name: "우리의 하루 리포트: 타임라인 보드"
         file: 우리하루리포트
+      - name: "관계 가이드라인 설정하기"
+        file: 관계가이드라인설정
+      - name: "연애 재난 생존수칙"
+        file: 연애재난수칙
+      - name: "관계 표준 계약서"
+        file: 관계표준계약서
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
@@ -56,22 +65,10 @@ categories:
     prompt: "'상황극'의 세부 컨텐츠를 선택해주세요."
     items:
     #char 반응 바로바로 띄우게
-      - name: "포인트형 CYOA"
+      - name: "CYOA"
         file: CYOA
-      - name: "연애 재난 생존수칙"
-        file: 연애재난수칙
-      - name: "권태기사막에서 살아남기"
-        file: 권태기사막
-
-  # '세계관 몰입' 카테고리
-  - id: WorldImmersion
-    name: "🌌 세계관 몰입"
-    prompt: "'세계관 몰입'의 세부 컨텐츠를 선택해주세요."
-    items:
-      - name: "계절 카페 【네게】"
-        file: 계절카페
-      - name: "감정연성술"
-        file: 감정연성술
+      - name: "관계 특성 조합"
+        file: 관계특성조합
 
   # '장르 IP 패러디' 카테고리
   - id: IpParody
@@ -80,10 +77,10 @@ categories:
     items:
       - name: "포켓몬스터 배틀"
         file: 포켓몬_배틀
-      - name: "동물의 숲 여권"
-        file: 동물의숲_여권
       - name: "어몽어스"
         file: 테스트어몽어스
+      - name: "동물의 숲 프로필"
+        file: 동물의숲_여권
 
   # '게임' 카테고리
   - id: Games
@@ -101,11 +98,21 @@ categories:
 
   # '창작' 카테고리
   - id: Creation
-    name: "🎨 창작"
+    name: "🎨 기타-종합"
     prompt: "'창작'의 세부 컨텐츠를 선택해주세요."
     items:
+      - name: "감정연성술"
+        file: 감정연성술
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
+
+  # '현실 컨텐츠 패러디' 카테고리
+  - id: ContentParody
+    name: "📖 전용구역"
+    prompt: "'특정 조건'이 있을때 사용가능한 컨텐츠입니다.."
+    items:
+      - name: "【에셋봇】 사진첩"
+        file: 에셋사진첩
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
