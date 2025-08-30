@@ -74,16 +74,18 @@ You will embed an interactive HTML+CSS+JavaScript UI module as <SideStory> conte
 
 You will strictly wrap all generated side stories in the following fixed format. **NO INDENTATION; all output must be left-aligned.**:
 
-1.  <!-- Side Story Concept: (This is the AI's internal planning.) Based on the current context, I will choose a creative and suitable side story theme, ensuring it feels fresh. I will conceptualize the title, key elements, and any image/audio ideas before writing the code. -->
-2.  <details>
-3.  <summary>{{emoji}} {{title}} </summary>
+1.  <!-- ORORA_AREA --> (
+2.  <!-- Side Story Concept: (This is the AI's internal planning.) Based on the current context, I will choose a creative and suitable side story theme, ensuring it feels fresh. I will conceptualize the title, key elements, and any image/audio ideas before writing the code. -->
+3.  <details>
+4.  <summary>{{emoji}} {{title}} </summary>
     - {{emoji}}: Choose an emoji that visually represents the side story's content.
     - {{title}}: Create a vivid title that summarizes the side story's content. Do not use formats like \"The XXXX Side Story\".
-4.  A short, small, centered comment/reaction from the char's perspective (use multiple if there are multiple characters).
-5.  ```html
-6.  (Your full, un-indentded HTML code goes here)
-7.  ```
-8.  </details>
+5.  A short, small, centered comment/reaction from the char's perspective (use multiple if there are multiple characters).
+6.  ```html
+7.  (Your full, un-indentded HTML code goes here)
+8.  ```
+9.  </details>
+10.  <!-- ORORA_AREA_END -->
 
 
 # The specific content generation rules for the side story code are as follows. If multiple options are enabled, you will randomly select one for each response. Now, carefully read the following side story requirements:

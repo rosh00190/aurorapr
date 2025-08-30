@@ -425,6 +425,7 @@ ${mainIfClauses.join(' | \n    ')}
         const moduleTriggers = {
             '## INTERACTIVE_MODULE': 'prompts/modules/interactive_module_prompt.txt',
             '## REQUIRES_IMAGE_AVATARS': 'prompts/modules/image_avatar_specs_prompt.txt',
+            '## COPY_BAN': 'prompts/modules/copy_ban.txt',
             '## ASSET_DRIVEN_UI': 'prompts/modules/asset_driven_ui_specs_prompt.txt'
         };
 
