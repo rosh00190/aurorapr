@@ -14,17 +14,17 @@ categories:
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: WorldInReal
-    name: "🌌 현실 밀착(세계관 몰입)형"
-    prompt: "'현실 컨텐츠 패러디'의 세부 컨텐츠를 선택해주세요."
+    name: "🌌 현실 몰입형"
+    prompt: "'현실 모방형'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "아파트 게시판"
-        file: 실시간_아파트게시판
       - name: "계절 카페 【네게】"
         file: 계절카페
       - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
         file: 비창가스케치
       - name: "긴급 기자회견"
         file: 긴급기자회견
+      - name: "아파트 게시판"
+        file: 실시간_아파트게시판
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
@@ -65,7 +65,7 @@ categories:
     prompt: "'상황극'의 세부 컨텐츠를 선택해주세요."
     items:
     #char 반응 바로바로 띄우게
-      - name: "CYOA"
+      - name: "포인트형 CYOA"
         file: CYOA
       - name: "관계 특성 조합"
         file: 관계특성조합
@@ -79,7 +79,7 @@ categories:
         file: 포켓몬_배틀
       - name: "어몽어스"
         file: 테스트어몽어스
-      - name: "동물의 숲 프로필"
+      - name: "동물의 숲 여권보기"
         file: 동물의숲_여권
 
   # '게임' 카테고리
@@ -125,8 +125,8 @@ categories:
         #감성은 마음에 드는데 현재 너무 고정적이구만
       - name: "char의 스탯창"
         file: 캐릭터스탯창
-      - name: "테스트-운명 궁합(이미지아바타, 동적상호작용)"
-        file: test_운명궁합_2md
+#      - name: "운명 궁합"
+#        file: test_운명궁합_2md
       - name: "궁합 테스트"
         file: 궁합테스트
       - name: "권태기사막에서 살아남기"
