@@ -102,17 +102,6 @@ return class DynamicMenu {
         try {
             let actionString;
 
-            // --- 시작: 인자 타입 체크 (하위 호환성 지원) ---
-            // 인자가 문자열이면, 새로운 방식의 호출(빠른 실행 등)로 간주합니다.
-            if (typeof input === 'string') {
-                actionString = input;
-            } 
-            //const lastAction = getVariables({ type: 'global' }).orora_selected_file;
-            //console.log(lastAction);
-
-            // 인자가 객체이면, 기존 배포.js의 handleWorldInfoUpdate로부터 온 호출로 간주합니다.
-            else if (typeof input === 'object' && input !== null && input.orora_selected_file) {
-                actionString = input.orora_selected_file;
 
                 const globalVars_q = getVariables({ type: 'global' });
                 if (globalVars_q && globalVars_q.orora_quick_run) {
@@ -125,6 +114,18 @@ return class DynamicMenu {
                     this.triggerQuickAction();
                     return;
                 }
+            // --- 시작: 인자 타입 체크 (하위 호환성 지원) ---
+            // 인자가 문자열이면, 새로운 방식의 호출(빠른 실행 등)로 간주합니다.
+            if (typeof input === 'string') {
+                actionString = input;
+            } 
+            //const lastAction = getVariables({ type: 'global' }).orora_selected_file;
+            //console.log(lastAction);
+
+            // 인자가 객체이면, 기존 배포.js의 handleWorldInfoUpdate로부터 온 호출로 간주합니다.
+            else if (typeof input === 'object' && input !== null && input.orora_selected_file) {
+                actionString = input.orora_selected_file;
+
             } 
             // 유효하지 않은 인자가 들어오면 작업을 중단합니다.
             else {
