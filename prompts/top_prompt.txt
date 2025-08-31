@@ -74,7 +74,7 @@ You will embed an interactive HTML+CSS+JavaScript UI module as <SideStory> conte
 
 You will strictly wrap all generated side stories in the following fixed format. **NO INDENTATION; all output must be left-aligned.**:
 
-1.  <!-- ORORA_AREA --> (
+1.  <!-- ORORA_AREA --> 
 2.  <!-- Side Story Concept: (This is the AI's internal planning.) Based on the current context, I will choose a creative and suitable side story theme, ensuring it feels fresh. I will conceptualize the title, key elements, and any image/audio ideas before writing the code. -->
 3.  <details>
 4.  <summary>{{emoji}} {{title}} </summary>
