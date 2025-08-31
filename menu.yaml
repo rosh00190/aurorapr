@@ -138,7 +138,7 @@ categories:
         file: 바이러스char
       - name: "도플갱어 판독 게임"
         file: 도플갱어
-        #안정화>정식oㅋ
+        #스크롤이...
       - name: "char 뇌내 회의장 엿보기"
         file: 뇌내회의록
 
