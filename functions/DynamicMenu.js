@@ -51,30 +51,100 @@ return class DynamicMenu {
         }
     }
 
-    /**
-     * [공개 메서드 2] 사용자의 메뉴 선택 후의 모든 처리
-     * handleWorldInfoUpdate에 의해 호출됩니다.
-     * @param {object} globalVars - 사용자의 선택 정보가 담긴 글로벌 변수 객체
-     */
-    async processAction(globalVars) {
+    async triggerQuickAction() {
+        const { logger, getVariables } = this.deps;
+        
+        try {
+            const lastAction = getVariables({ type: 'global' }).orora_selected_file;
+
+        // 1. 마지막 실행 기록이 없는 경우 (Case 4)
+            if (!lastAction) {
+                toastr.info('🚀 마지막 실행 기록이 없습니다.');
+                return;
+            }
+
+
+        // 2. processAction이 이해할 수 있는 형태로 변환
+            let actionString;
+            const isCustomCommand = lastAction.trim().startsWith('<request_custom_content>');
+
+            if (isCustomCommand) {
+            // 2-1. 이미 커스텀 입력 형태인 경우 그대로 사용 (Case 1, 2)
+                actionString = lastAction;
+            } 
+            else {
+            // 2-2. 파일 경로만 있는 경우, LOAD_FILE 구문으로 시뮬레이션 (Case 3)
+                actionString = `<request_custom_content> ## LOAD_FILE::${lastAction}.txt`;
+            }
+
+        // 3. 변환된 actionString으로 processAction 실행
+            // 수정된 processAction을 호출합니다.
+            await this.processAction(actionString);
+
+        } catch (error) {
+            logger.error('빠른 실행 처리 중 오류 발생:', error);
+            toastr.error('빠른 실행 중 오류가 발생했습니다.');
+        }
+    }
+    async processAction(input) {
         const { logger, triggerSlash } = this.deps;
         try {
-            // 후처리가 시작되면 action flag는 바로 초기화하여 중복 실행을 방지합니다.
-            await triggerSlash('/flushglobalvar orora_action_flag');
+            let actionString;
 
-            // 2. 해석가: 사용자의 선택을 해석합니다.
-            const request = this.#parseRequest(globalVars.orora_selected_file);
+            // --- 시작: 인자 타입 체크 (하위 호환성 지원) ---
+            // 인자가 문자열이면, 새로운 방식의 호출(빠른 실행 등)로 간주합니다.
+            if (typeof input === 'string') {
+                actionString = input;
+            } 
+            //const lastAction = getVariables({ type: 'global' }).orora_selected_file;
+            //console.log(lastAction);
+
+            // 인자가 객체이면, 기존 배포.js의 handleWorldInfoUpdate로부터 온 호출로 간주합니다.
+            else if (typeof input === 'object' && input !== null && input.orora_selected_file) {
+                actionString = input.orora_selected_file;
+            } 
+            // 유효하지 않은 인자가 들어오면 작업을 중단합니다.
+            else {
+
+                                // getVariables({ type: 'global' })의 반환값을 일단 변수에 저장합니다.
+                const globalVars_q = getVariables({ type: 'global' });
+
+                // globalVars가 존재하고, 그 안의 orora_selected_file도 "유효한 값"일 경우에만 true가 됩니다.
+                if (globalVars_q && globalVars_q.orora_quick_file) {
+                    //QR 임시대응-강제지원
+                    
+                    // 여기에 코드를 작성하면 안전합니다.
+                    // orora_selected_file이 undefined, null, ""(빈 문자열)인 경우가 모두 걸러집니다.
+                    //actionString = globalVars.orora_selected_file;
+                    await triggerSlash('/flushglobalvar orora_quick_file');
+                    triggerQuickAction();
+                    return;
+                }else{
+
+                    logger.warn('processAction에 유효하지 않은 인자가 전달되었습니다.', input);
+                    return;
+                }
+            }
+            // --- 종료: 인자 타입 체크 ---
+
+            await triggerSlash('/flushglobalvar orora_action_flag');
+            
+            // 이제부터 모든 로직은 actionString 변수를 기준으로 동일하게 동작합니다.
+            const request = this.#parseRequest(actionString);
             if (!request) return;
 
             // 3. 재료 조달자: 필요한 모든 프롬프트 파일을 가져옵니다.
             const promptData = await this.#fetchPrompts(request);
             if (!promptData) return;
 
+            // getVariables를 직접 호출하여 최신 globalVars를 가져옵니다.
+            const globalVars = this.deps.getVariables({ type: 'global' });
             // 4. 셰프: 프롬프트를 조립하고, 랜덤/변수 등 모든 후처리를 수행합니다.
             const finalPrompt = await this.#assembleAndProcess(promptData, globalVars);
-
+            
             // 5. 집행자: 최종 /gen 스크립트를 생성하고 실행합니다.
             await this.#executeGeneration(finalPrompt);
+
         } catch (error) {
             logger.error('DynamicMenu.processAction 실행 중 오류 발생:', error);
             toastr.error('선택 항목 처리 중 오류가 발생했습니다. F12 콘솔을 확인하세요.');
@@ -419,7 +489,10 @@ ${mainIfClauses.join(' | \n    ')}
         const { logger, getProxiedUrl, getPromptText } = this.deps;
         logger.debug("파이프라인 2: Middle 프롬프트 후처리 시작...");
 
-        let processedPrompt = cleanMiddlePrompt;
+            // 1. '파일 로드' 전용 함수를 가장 먼저 호출하여 내용을 가져옵니다.
+            //    await를 사용하여 파일 로드가 완료될 때까지 기다립니다.
+            let processedPrompt = await this.#processFileLoading(cleanMiddlePrompt);
+            //let processedPrompt = cleanMiddlePrompt;
 
         // 1. 처리할 모듈들을 '식별자: 파일명' 형태로 매핑합니다.
         const moduleTriggers = {
@@ -614,6 +687,41 @@ ${mainIfClauses.join(' | \n    ')}
         }
         return depth;
     }
+    
+        
+        async #processFileLoading(promptText) {
+            const { logger, getProxiedUrl, getPromptText } = this.deps;
+            
+            // ## LOAD_FILE::[파일경로] 형태의 구문을 찾기 위한 정규식입니다. (대소문자 무시)
+            const fileLoadRegex = /##\s*LOAD_FILE::\s*(.*)/i;
+            const match = promptText.match(fileLoadRegex);
+
+            if (!match) {
+                // 'LOAD_FILE' 구문이 없으면 원본 텍스트를 그대로 반환합니다.
+                return promptText;
+            }
+
+            const fullMatchString = match[0]; // "## LOAD_FILE::my_story.txt" 전체 구문
+            const filePath = match[1].trim(); // "my_story.txt" 부분
+            logger.info(`'## LOAD_FILE' 구문을 감지했습니다. 파일 로드를 시도합니다: ${filePath}`);
+
+            // orora/ 폴더를 기준으로 파일 경로를 조합하여 전체 URL을 만듭니다.
+            // 예: 'test/new.txt' -> '.../proxy?file=orora/test/new.txt&...'
+            const fileUrl = getProxiedUrl(`orora/${filePath}`);
+            const fileContent = await getPromptText(fileUrl);
+
+            if (fileContent !== null && fileContent !== undefined) {
+                logger.info(`'${filePath}' 파일 로드 성공. 해당 구문을 파일 내용으로 치환합니다.`);
+                // 원본 텍스트에서 '## LOAD_FILE::...' 부분만 파일 내용으로 교체하여 반환합니다.
+                return promptText.replace(fullMatchString, fileContent);
+            } else {
+                logger.warn(`'${filePath}' 파일 로드 실패. 내용이 없거나 파일을 찾을 수 없습니다.`);
+                // 실패 시, 해당 구문을 오류 메시지로 교체하여 반환합니다.
+                //const errorMessage = `[오류: '${filePath}' 파일을 불러올 수 없습니다.]`;
+                const errorMessage = '';
+                return promptText.replace(fullMatchString, errorMessage);
+            }
+        }
     #selectRandomOption(content) {
         if (!content) return '';
         const options = this.#smartSplit(content, '::');
