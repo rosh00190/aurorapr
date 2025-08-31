@@ -63,6 +63,17 @@ return class DynamicMenu {
                 return;
             }
 
+            //---임시초기화
+            
+            charData = await getCharData();
+            if (!charData || !charData.name) {
+                logger.error('캐릭터 정보를 가져오는 데 실패했습니다.');
+                toastr.error('현재 캐릭터 정보를 가져올 수 없습니다.');
+                return false;
+            }
+            charName = charData.name;
+            logger.debug(`현재 캐릭터: ${charName}`);
+            // --- 임시초기화 여기까지.
 
         // 2. processAction이 이해할 수 있는 형태로 변환
             let actionString;
@@ -110,13 +121,13 @@ return class DynamicMenu {
                 const globalVars_q = getVariables({ type: 'global' });
 
                 // globalVars가 존재하고, 그 안의 orora_selected_file도 "유효한 값"일 경우에만 true가 됩니다.
-                if (globalVars_q && globalVars_q.orora_quick_file) {
+                if (globalVars_q && globalVars_q.orora_quick_run) {
                     //QR 임시대응-강제지원
                     
                     // 여기에 코드를 작성하면 안전합니다.
                     // orora_selected_file이 undefined, null, ""(빈 문자열)인 경우가 모두 걸러집니다.
                     //actionString = globalVars.orora_selected_file;
-                    await triggerSlash('/flushglobalvar orora_quick_file');
+                    await triggerSlash('/flushglobalvar orora_quick_run');
                     triggerQuickAction();
                     return;
                 }else{
