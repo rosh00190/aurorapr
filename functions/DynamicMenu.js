@@ -65,13 +65,13 @@ return class DynamicMenu {
 
             //---임시초기화
             
-            charData = await getCharData();
+            this.charData = await getCharData();
             if (!charData || !charData.name) {
                 logger.error('캐릭터 정보를 가져오는 데 실패했습니다.');
                 toastr.error('현재 캐릭터 정보를 가져올 수 없습니다.');
                 return false;
             }
-            charName = charData.name;
+            this.charName = charData.name;
             logger.debug(`현재 캐릭터: ${charName}`);
             // --- 임시초기화 여기까지.
 
