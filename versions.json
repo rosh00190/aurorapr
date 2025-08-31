@@ -1,7 +1,7 @@
 {
   "menu.yaml": "1.0.0",
   
-  "prompts/top_prompt.txt": "1.0.0",
+  "prompts/top_prompt.txt": "1.1.1",
   "prompts/bottom_prompt.txt": "1.0.0",
   
   "prompts/modules/interactive_module_prompt.txt": "1.0.0",
