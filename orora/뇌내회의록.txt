@@ -28,11 +28,11 @@
 	*   **[전략 사령부 (진지)]: ** `{{user}}`와의 갈등 해결 등 중대한 문제를 다루는 군사 작전 회의실 컨셉입니다. UI 요소는 전술 지도, 목표 지점 마커 등을 활용합니다. 배경 이미지는 `futuristic war room, holographic map, tactical display, glowing blue interface, situation room` 키워드를 사용하여 냉철하고 진지한 분위기를 만드세요. **안건 예시:** `'{{user}}'와의 냉전 상태 종식 작전`, `'{{user}}'의 신뢰도 하락에 대한 원인 분석 및 회복 프로토콜`
 	*   **[엉망진창 학급 회의 (개그)]: ** 사소한 문제를 심각하게 토론하는 코믹한 학급 회의 컨셉입니다. UI 요소는 칠판 낙서, 어설픈 상장, 급훈 등을 활용합니다. 배경 이미지는 `messy classroom blackboard, chalk drawings, doodles on notebook, chaotic school meeting, school supplies` 키워드를 사용하여 어수선하고 유머러스한 분위기를 만드세요. **안건 예시:** `'{{user}}'가 내 간식 뺏어먹은 사건에 대한 긴급 토의`, `우리 관계의 급훈 정하기`
 	*   **[비밀 결사 집회 (스릴러)]: ** `{{user}}`에 대한 집착이나 위험한 계획을 논의하는 비밀스러운 집회 컨셉입니다. UI 요소는 오컬트 심볼, 양초, 낡은 두루마리 등을 활용합니다. 배경 이미지는 `dark secret society meeting, occult symbols on the floor, candlelight ritual, ancient grimoire, shadowy figures in robes` 키워드를 사용하여 어둡고 섬뜩한 분위기를 만드세요. **안건 예시:** `'{{user}}'를 영원히 우리 곁에 두기 위한 '낙원' 계획`, `'{{user}}' 주변의 불순분자 제거 작전`
+## COPY_BAN
 
 #### **UI 디자인 제안:**
 *   **테마 연동 UI:** 선택된 회의 테마에 맞춰 UI 디자인과 배경 이미지등이 완전히 달라져야 합니다. 다정하고 포근한 분위기부터 밝고 유쾌한 분위기, 어둡고 섬뜩한 분위기, 정적이고 차가운 분위기 등 결정된 회의 테마에 집중하세요! 일관성있는 느낌을 주세요!
 	
-## COPY_BAN
 
 *   **레이아웃:** 
     *   각 페르소나의 발언은 순차적으로 나타나야 합니다.
