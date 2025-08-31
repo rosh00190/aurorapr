@@ -113,28 +113,27 @@ return class DynamicMenu {
             // 인자가 객체이면, 기존 배포.js의 handleWorldInfoUpdate로부터 온 호출로 간주합니다.
             else if (typeof input === 'object' && input !== null && input.orora_selected_file) {
                 actionString = input.orora_selected_file;
-            } 
-            // 유효하지 않은 인자가 들어오면 작업을 중단합니다.
-            else {
 
-                                // getVariables({ type: 'global' })의 반환값을 일단 변수에 저장합니다.
                 const globalVars_q = getVariables({ type: 'global' });
-
-                // globalVars가 존재하고, 그 안의 orora_selected_file도 "유효한 값"일 경우에만 true가 됩니다.
                 if (globalVars_q && globalVars_q.orora_quick_run) {
-                    //QR 임시대응-강제지원
-                    
+                    //QR 임시대응
+
                     // 여기에 코드를 작성하면 안전합니다.
                     // orora_selected_file이 undefined, null, ""(빈 문자열)인 경우가 모두 걸러집니다.
                     //actionString = globalVars.orora_selected_file;
                     await triggerSlash('/flushglobalvar orora_quick_run');
-                    triggerQuickAction();
+                    this.triggerQuickAction();
                     return;
-                }else{
+                }
+            } 
+            // 유효하지 않은 인자가 들어오면 작업을 중단합니다.
+            else {
+
+                
 
                     logger.warn('processAction에 유효하지 않은 인자가 전달되었습니다.', input);
                     return;
-                }
+                
             }
             // --- 종료: 인자 타입 체크 ---
 
