@@ -9,6 +9,6 @@
   "prompts/modules/asset_driven_ui_specs_prompt.txt": "1.0.0-dev",
   "prompts/modules/copy_ban.txt": "1.0.0-dev",
   
-  "functions/DynamicMenu.js": "1.3.0-dev",
+  "functions/DynamicMenu.js": "1.3.2-dev",
   "functions/ResponseCorrector.js": "1.1.1-dev"
 }
