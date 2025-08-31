@@ -131,13 +131,15 @@ categories:
         file: 궁합테스트
       - name: "권태기사막에서 살아남기"
         file: 권태기사막
-      - name: "평행우주 관측기 오버랩"
+        #안정화>정식oㅋ
+      - name: "평행우주 관측기 【OVERLAP】"
         file: 평행우주_오버랩
       - name: "바이러스 char.exe가 실행되었습니다"
         file: 바이러스char
       - name: "도플갱어 판독 게임"
         file: 도플갱어
-      - name: "char 뇌내 회의장"
+        #안정화>정식oㅋ
+      - name: "char 뇌내 회의장 엿보기"
         file: 뇌내회의록
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
