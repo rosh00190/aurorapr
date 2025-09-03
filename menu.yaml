@@ -69,6 +69,8 @@ categories:
         file: CYOA
       - name: "관계 특성 조합"
         file: 관계특성조합
+      - name: "평행우주 관측기 【OVERLAP】"
+        file: 평행우주_오버랩
 
   # '장르 IP 패러디' 카테고리
   - id: IpParody
@@ -106,7 +108,7 @@ categories:
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
 
-  # '현실 컨텐츠 패러디' 카테고리
+  # '전용구역' 카테고리
   - id: RestrictedZone
     name: "📖 전용구역"
     prompt: "'특정 조건'이 있을때 사용가능한 컨텐츠입니다.."
