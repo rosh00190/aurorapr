@@ -26,13 +26,56 @@ return class DynamicMenu {
         this.charName = ''; // 현재 캐릭터 이름 저장
     }
 
+        /**
+         * [임시] 항상 최신 캐릭터 이름을 보장하기 위한 내부 헬퍼 함수. (참조 코드 기반 최종 수정)
+         * 우선순위: (1) 빠른 실행 전용 글로벌 변수 -> (2) DOM 탐색 -> (3) 기존 인자값
+         * @param {string} currentName - 현재 함수에 전달된 (오래되었을 수 있는) 캐릭터 이름
+         * @returns {Promise<string>} - 확인된 최신 캐릭터 이름
+         */
+        async _ensureLatestCharInfo(currentName) {
+            const { logger, getVariables, triggerSlash } = this.deps;
+            
+            // 1. (최우선) 빠른 실행 시에만 사용되는 1회성 글로벌 변수를 확인합니다.
+            const globalVars = await getVariables({ type: 'global' });
+            if (globalVars && globalVars.orora_quick_char_name) {
+                const charNameFromGlobal = globalVars.orora_quick_char_name;
+                logger.debug(`[임시] 글로벌 변수 'orora_quick_char_name'에서 '${charNameFromGlobal}'(을)를 확인했습니다.`);
+                await triggerSlash('/flushglobalvar orora_quick_char_name'); // 사용 후 즉시 제거
+                return charNameFromGlobal;
+            }
+
+            // 2. (차선책) DOM에서 현재 보이는 캐릭터 이름을 직접 탐색합니다. (제공된 코드 로직을 그대로 사용)
+            try {
+                // 'parent.document'를 사용해 스크립트가 iframe 내에서 실행되더라도 전체 문서를 탐색합니다.
+                const charNameElement = parent.document.querySelector('.mes[is_user="false"] .ch_name .name_text');
+                
+                // nameElement가 존재하고, 그 내용(textContent)이 비어있지 않은지 확인합니다.
+                if (charNameElement && charNameElement.textContent && charNameElement.textContent.trim()) {
+                    const charNameFromDOM = charNameElement.textContent.trim();
+                    if (charNameFromDOM !== currentName && currentName !== '') { // 초기 호출이 아닐 때만 로그를 남김
+                         logger.debug(`[임시] DOM 탐색을 통해 캐릭터 이름이 '${currentName}' -> '${charNameFromDOM}'(으)로 갱신되었습니다.`);
+                    } else if (currentName === '') {
+                        logger.debug(`[임시] DOM 탐색을 통해 캐릭터 이름 '${charNameFromDOM}'(을)를 확인했습니다.`);
+                    }
+                    return charNameFromDOM;
+                }
+            } catch(e) {
+                 logger.warn('[임시] DOM 탐색 중 오류가 발생했습니다.', e);
+            }
+
+            // 3. (안전장치) 위 방법들이 모두 실패하면, 기존에 받은 이름을 그대로 반환합니다.
+            logger.debug(`[임시] 추가적인 캐릭터 정보 갱신 없이 기존 이름 '${currentName}'(을)를 사용합니다.`);
+            return currentName;
+        }
+		
     /**
      * [공개 메서드 1] 메뉴 UI 생성 및 표시
      * 사용자가 버튼을 클릭했을 때 호출됩니다.
      * @param {object} runtimeDeps - 실행 시점에 결정되는 동적 데이터 (예: charName)
      */
     async run(runtimeDeps) {
-        this.charName = runtimeDeps.charName;
+        //this.charName = runtimeDeps.charName;
+		this.charName = await this._ensureLatestCharInfo(runtimeDeps.charName);
         const { logger } = this.deps;
         try {
             // 메뉴 생성에 필요한 데이터(YAML, 북마크)를 불러옵니다.
@@ -63,17 +106,7 @@ return class DynamicMenu {
                 return;
             }
 
-            //---임시초기화
-            
-            charData = await getCharData();
-            if (!charData || !charData.name) {
-                logger.error('캐릭터 정보를 가져오는 데 실패했습니다.');
-                toastr.error('현재 캐릭터 정보를 가져올 수 없습니다.');
-                return false;
-            }
-            charName = charData.name;
-            logger.debug(`현재 캐릭터: ${charName}`);
-            // --- 임시초기화 여기까지.
+			this.charName = await this._ensureLatestCharInfo('');
 
         // 2. processAction이 이해할 수 있는 형태로 변환
             let actionString;
