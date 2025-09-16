@@ -32,6 +32,7 @@ return class DynamicMenu {
          * @param {string} currentName - 현재 함수에 전달된 (오래되었을 수 있는) 캐릭터 이름
          * @returns {Promise<string>} - 확인된 최신 캐릭터 이름
          */
+        
         async _ensureLatestCharInfo(currentName) {
             const { logger, getVariables, triggerSlash } = this.deps;
             
@@ -44,23 +45,37 @@ return class DynamicMenu {
                 return charNameFromGlobal;
             }
 
-            // 2. (차선책) DOM에서 현재 보이는 캐릭터 이름을 직접 탐색합니다. (제공된 코드 로직을 그대로 사용)
+
+            // 2. (차선책) DOM에서 현재 보이는 캐릭터 이름을 직접 탐색합니다.
             try {
-                // 'parent.document'를 사용해 스크립트가 iframe 내에서 실행되더라도 전체 문서를 탐색합니다.
-                const charNameElement = parent.document.querySelector('.mes[is_user="false"] .ch_name .name_text');
+                // 여기에 시스템 메시지로 간주하여 제외할 이름들을 소문자로 추가하세요.
+                const EXCLUDED_NAMES = ['system','sys','note','memo'];
+
+                // is_user="false" 속성을 가진 모든 메시지 요소를 최신순으로 정렬합니다.
+                const allCharMessages = Array.from(parent.document.querySelectorAll('.mes[is_user="false"]')).reverse();
                 
-                // nameElement가 존재하고, 그 내용(textContent)이 비어있지 않은지 확인합니다.
-                if (charNameElement && charNameElement.textContent && charNameElement.textContent.trim()) {
-                    const charNameFromDOM = charNameElement.textContent.trim();
-                    if (charNameFromDOM !== currentName && currentName !== '') { // 초기 호출이 아닐 때만 로그를 남김
-                         logger.debug(`[임시] DOM 탐색을 통해 캐릭터 이름이 '${currentName}' -> '${charNameFromDOM}'(으)로 갱신되었습니다.`);
-                    } else if (currentName === '') {
-                        logger.debug(`[임시] DOM 탐색을 통해 캐릭터 이름 '${charNameFromDOM}'(을)를 확인했습니다.`);
+                // 최신 메시지부터 순회하며 유효한 '캐릭터' 메시지를 찾습니다.
+                for (const messageElement of allCharMessages) {
+                    const charNameElement = messageElement.querySelector('.ch_name .name_text');
+                    
+                    // 이름 요소가 있는지 먼저 확인합니다.
+                    if (charNameElement && charNameElement.textContent) {
+                        const charNameFromDOM = charNameElement.textContent.trim();
+                        
+                        // 이름이 비어있지 않고, 제외 목록에 포함되지 않는 경우에만 유효한 캐릭터로 간주합니다.
+                        if (charNameFromDOM && !EXCLUDED_NAMES.includes(charNameFromDOM.toLowerCase())) {
+                            if (charNameFromDOM !== currentName && currentName !== '') {
+                                logger.debug(`[임시] DOM 탐색(v3)을 통해 캐릭터 이름이 '${currentName}' -> '${charNameFromDOM}'(으)로 갱신되었습니다.`);
+                            } else if (currentName === '') {
+                                logger.debug(`[임시] DOM 탐색(v3)을 통해 캐릭터 이름 '${charNameFromDOM}'(을)를 확인했습니다.`);
+                            }
+                            // 유효한 캐릭터 이름을 찾았으므로 즉시 반환하고 반복을 중단합니다.
+                            return charNameFromDOM; 
+                        }
                     }
-                    return charNameFromDOM;
                 }
             } catch(e) {
-                 logger.warn('[임시] DOM 탐색 중 오류가 발생했습니다.', e);
+                logger.warn('[임시] DOM 탐색 중 오류가 발생했습니다.', e);
             }
 
             // 3. (안전장치) 위 방법들이 모두 실패하면, 기존에 받은 이름을 그대로 반환합니다.
