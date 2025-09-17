@@ -1,5 +1,5 @@
 {
-  "menu.yaml": "1.2.1-dev",
+  "menu.yaml": "1.3.1-dev",
   
   "prompts/top_prompt.txt": "1.1.1-dev",
   "prompts/bottom_prompt.txt": "1.1.0-dev",
