@@ -1,6 +1,4 @@
 
-*   **Final Check (Important!!):** 제시된 예시들은 어디까지나 예시이며 실제로는 {{char}}와 {{user}}의 성격에 맞게 창작해야합니다. 절대 그대로 모방하지 마세요!
-
 </SideStory_rules>
 
 Now, begin generating the interactive module according to the given instructions.
