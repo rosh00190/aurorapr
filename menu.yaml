@@ -11,6 +11,8 @@ categories:
         file: 오로라클라우드
       - name: "【판매상품 - char】"
         file: 렌탈상품
+      - name: "배달 음식 리뷰"
+        file: 배달리뷰
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: WorldInReal
@@ -25,6 +27,10 @@ categories:
         file: 긴급기자회견
       - name: "아파트 게시판"
         file: 실시간_아파트게시판
+      - name: "인생네컷 포토부스"
+        file: 인생네컷
+      - name: "관계 통장"
+        file: 우리관계통장
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
@@ -42,6 +48,8 @@ categories:
         file: 마음해킹
       - name: "성격 스탯 재분배 시뮬레이터"
         file: 성격스탯재분배
+      - name: "char의 지옥 재판"
+        file: 지옥재판
 
   # '관계 진단' 카테고리
   - id: RelationshipDiagnosis
@@ -58,6 +66,14 @@ categories:
         file: 연애재난수칙
       - name: "관계 표준 계약서"
         file: 관계표준계약서
+      - name: "우리 관계 부루마불"
+        file: 우리관계마블
+      - name: "거짓말 탐지기"
+        file: 거짓말탐지기
+      - name: "🔞거짓말 탐지기(NSFW)"
+        file: 거짓말탐지기NSFW
+      - name: "싱크로율 테스트"
+        file: 싱크로율
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
@@ -69,6 +85,8 @@ categories:
         file: CYOA
       - name: "관계 특성 조합"
         file: 관계특성조합
+      - name: "평행우주 관측기 【OVERLAP】"
+        file: 평행우주_오버랩
 
   # '장르 IP 패러디' 카테고리
   - id: IpParody
@@ -141,26 +159,8 @@ categories:
         #스포방지랑 이미지크기 조절...
       - name: "【시뮬봇】 이상형 월드컵"
         file: 시뮬봇_이상형월드컵
-        #이 아래 전부 정식 올려도 될 거 같은데
-      - name: "우리 관계 부루마불"
-        file: 우리관계마블
-      - name: "배달 음식 리뷰"
-        file: 배달리뷰
-      - name: "거짓말 탐지기"
-        file: 거짓말탐지기
-      - name: "🔞거짓말 탐지기(NSFW)"
-        file: 거짓말탐지기NSFW
-      - name: "인생네컷 포토부스"
-        file: 인생네컷
-      - name: "싱크로율 테스트"
-        file: 싱크로율
-      - name: "char의 지옥 재판"
-        file: 지옥재판
-        #여기부터 다시 테스트
       - name: "고민 격파 게임"
         file: 걱정두더지잡기
-      - name: "관계 통장"
-        file: 우리관계통장
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
