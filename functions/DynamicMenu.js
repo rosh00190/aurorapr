@@ -314,6 +314,7 @@ return class DynamicMenu {
         // [수정] 상수 사용
         const settingsMenuLabels = [
             '"🌱\\{\\{char\\}\\}(기본값)"',
+            '"\\{\\{user\\}\\}"',
             ...bookmarkLabels,
             JSON.stringify("➕ 북마크 추가"),
             JSON.stringify("🗑️ 북마크 삭제"), 
@@ -323,7 +324,9 @@ return class DynamicMenu {
 
         // [수정] 상수 사용
         const settingsMenuIfs = [
-            `/if left={{var::choice}} right="🌱\\{\\{char\\}\\}(기본값)" rule=eq {: /setglobalvar key=orora_fixed_char "\\{\\{char\\}\\}" | /echo 🌱 캐릭터 설정이 기본값으로 변경되었습니다. :}`,
+            `/if left={{var::choice}} right="🌱\\{\\{char\\}\\}(기본값)" rule=eq {: /setglobalvar key=orora_fixed_char "\\{\\{char\\}\\}" | /echo 🌱 캐릭터 설정이 기본값으로 변경되었습니다. :} |
+            /if left={{var::choice}} right="\\{\\{user\\}\\}" rule=eq {: /setglobalvar key=orora_fixed_char "\\{\\{user\\}\\}" | /echo 🌱 캐릭터 설정이 User로 변경되었습니다. :}
+            `,
             ...bookmarkIfs,
             `
             /if left={{var::choice}} right="수동설정" rule=eq {: 
