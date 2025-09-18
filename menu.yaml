@@ -13,6 +13,8 @@ categories:
         file: 렌탈상품
       - name: "배달 음식 리뷰"
         file: 배달리뷰
+      - name: "관계 통장"
+        file: 우리관계통장
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: WorldInReal
@@ -29,8 +31,6 @@ categories:
         file: 실시간_아파트게시판
       - name: "인생네컷 포토부스"
         file: 인생네컷
-      - name: "관계 통장"
-        file: 우리관계통장
 
   # '캐릭터 탐구' 카테고리
   - id: CharacterAnalysis
