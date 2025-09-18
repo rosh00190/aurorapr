@@ -141,18 +141,26 @@ categories:
         #스포방지랑 이미지크기 조절...
       - name: "【시뮬봇】 이상형 월드컵"
         file: 시뮬봇_이상형월드컵
+        #이 아래 전부 정식 올려도 될 거 같은데
       - name: "우리 관계 부루마불"
         file: 우리관계마블
       - name: "배달 음식 리뷰"
         file: 배달리뷰
       - name: "거짓말 탐지기"
         file: 거짓말탐지기
+      - name: "🔞거짓말 탐지기(NSFW)"
+        file: 거짓말탐지기NSFW
       - name: "인생네컷 포토부스"
         file: 인생네컷
       - name: "싱크로율 테스트"
         file: 싱크로율
       - name: "char의 지옥 재판"
         file: 지옥재판
+        #여기부터 다시 테스트
+      - name: "고민 격파 게임"
+        file: 걱정두더지잡기
+      - name: "관계 통장"
+        file: 우리관계통장
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
