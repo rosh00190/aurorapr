@@ -750,39 +750,50 @@ ${mainIfClauses.join(' | \n    ')}
     }
     
         
-        async #processFileLoading(promptText) {
-            const { logger, getProxiedUrl, getPromptText } = this.deps;
-            
-            // ## LOAD_FILE::[파일경로] 형태의 구문을 찾기 위한 정규식입니다. (대소문자 무시)
-            const fileLoadRegex = /##\s*LOAD_FILE::\s*(.*)/i;
-            const match = promptText.match(fileLoadRegex);
+    async #processFileLoading(promptText) {
+        const { logger, getProxiedUrl, getPromptText } = this.deps;
+        
+        // ## LOAD_FILE::[파일경로] 형태의 구문을 찾기 위한 정규식입니다. (대소문자 무시)
+        const fileLoadRegex = /##\s*LOAD_FILE::\s*(.*)/i;
+        const match = promptText.match(fileLoadRegex);
 
-            if (!match) {
-                // 'LOAD_FILE' 구문이 없으면 원본 텍스트를 그대로 반환합니다.
-                return promptText;
-            }
-
-            const fullMatchString = match[0]; // "## LOAD_FILE::my_story.txt" 전체 구문
-            const filePath = match[1].trim(); // "my_story.txt" 부분
-            logger.info(`'## LOAD_FILE' 구문을 감지했습니다. 파일 로드를 시도합니다: ${filePath}`);
-
-            // orora/ 폴더를 기준으로 파일 경로를 조합하여 전체 URL을 만듭니다.
-            // 예: 'test/new.txt' -> '.../proxy?file=orora/test/new.txt&...'
-            const fileUrl = getProxiedUrl(`orora/${filePath}`);
-            const fileContent = await getPromptText(fileUrl);
-
-            if (fileContent !== null && fileContent !== undefined) {
-                logger.info(`'${filePath}' 파일 로드 성공. 해당 구문을 파일 내용으로 치환합니다.`);
-                // 원본 텍스트에서 '## LOAD_FILE::...' 부분만 파일 내용으로 교체하여 반환합니다.
-                return promptText.replace(fullMatchString, fileContent);
-            } else {
-                logger.warn(`'${filePath}' 파일 로드 실패. 내용이 없거나 파일을 찾을 수 없습니다.`);
-                // 실패 시, 해당 구문을 오류 메시지로 교체하여 반환합니다.
-                //const errorMessage = `[오류: '${filePath}' 파일을 불러올 수 없습니다.]`;
-                const errorMessage = '';
-                return promptText.replace(fullMatchString, errorMessage);
-            }
+        if (!match) {
+            // 'LOAD_FILE' 구문이 없으면 원본 텍스트를 그대로 반환합니다.
+            return promptText;
         }
+
+        const fullMatchString = match[0]; // "## LOAD_FILE::my_story.txt" 전체 구문
+        const filePath = match[1].trim(); // "my_story.txt" 부분
+        logger.info(`'## LOAD_FILE' 구문을 감지했습니다. 파일 로드를 시도합니다: ${filePath}`);
+
+        let fileUrl; // URL을 담을 변수를 미리 선언합니다.
+
+        // filePath가 http:// 또는 https:// 로 시작하는지 확인합니다.
+        if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+            // 외부 URL인 경우, 경로를 그대로 사용합니다.
+            fileUrl = filePath;
+            logger.warn(`외부 URL을 감지했습니다: ${fileUrl}`);
+        } else {
+            // 내부 파일인 경우, 기존 방식대로 URL을 생성합니다.
+        // orora/ 폴더를 기준으로 파일 경로를 조합하여 전체 URL을 만듭니다.
+        // 예: 'test/new.txt' -> '.../proxy?file=orora/test/new.txt&...'
+            fileUrl = getProxiedUrl(`orora/${filePath}`);
+        }
+
+        const fileContent = await getPromptText(fileUrl);
+
+        if (fileContent !== null && fileContent !== undefined) {
+            logger.info(`'${filePath}' 파일 로드 성공. 해당 구문을 파일 내용으로 치환합니다.`);
+            // 원본 텍스트에서 '## LOAD_FILE::...' 부분만 파일 내용으로 교체하여 반환합니다.
+            return promptText.replace(fullMatchString, fileContent);
+        } else {
+            logger.warn(`'${filePath}' 파일 로드 실패. 내용이 없거나 파일을 찾을 수 없습니다.`);
+            // 실패 시, 해당 구문을 오류 메시지로 교체하여 반환합니다.
+            //const errorMessage = `[오류: '${filePath}' 파일을 불러올 수 없습니다.]`;
+            const errorMessage = '';
+            return promptText.replace(fullMatchString, errorMessage);
+        }
+    }
     #selectRandomOption(content) {
         if (!content) return '';
         const options = this.#smartSplit(content, '::');
