@@ -1,0 +1,286 @@
+지금 너무 짧다... 최소5번의 스테이지. 그리고 여전히 ui가 영... 그리고 타입마다 다 만들면 어떡해 낭비가 심함
+
+### <마음 공략: 홀드업 협상 미니극장>
+
+#### 유형 정의:
+페르소나 5의 '홀드업(Hold Up)' 협상 시스템을 모티브로 한 인터랙티브 심리전 미니극장입니다. `{{char}}`와 `{{user}}` 중 한 명이 '협상가'가 되고, 다른 한 명은 공략 대상인 '섀도'가 됩니다. 협상가는 섀도의 숨겨진 성격 타입을 간파하고, 2번의 대화 선택을 통해 마음을 얻어내야 합니다.
+
+---
+
+#### 핵심 메커니즘
+
+**1. 역할 무작위 배정**
+- 시작 시 `{{char}}`와 `{{user}}` 중 누가 협상가/섀도인지 무작위 결정
+- 섀도는 보이지 않는 '성격 타입' 1개를 부여받음
+  - 가능한 성격: `다혈질`, `소심함`, `명랑함`, `음침함`, `교활함`, `오만함`, `순진함` 중 1개
+
+**2. 2단계 문답**
+- 섀도가 자신의 성격에 맞는 질문을 2번 제시
+- 협상가는 각 질문마다 3개 선택지 중 1개 선택
+- 각 선택마다 내부 점수 변동:
+  - 정답: +2점
+  - 무난한 답: +0점
+  - 오답: -1점
+
+**3. 결과 분기 (총점 기준)**
+- **4점**: 완전 성공 → "알았어! 이제부터 네 편이야."
+- **2~3점**: 조건부 성공 → 아이템/호의 요구 → 50% 확률로 먹튀
+- **0~1점**: 협상 결렬 → "너랑은 안 맞아." 퇴장
+- **-1점 이하**: 분노 → "기분 나빠!" 화내며 퇴장
+
+---
+
+#### 성격별 정답 패턴 (AI 참고용)
+
+| 성격 | 올바른 대응 | 틀린 대응 |
+|------|------------|----------|
+| 다혈질 | 당당하고 자신감 있는 태도 | 비굴하거나 우유부단한 태도 |
+| 소심함 | 다정하고 안심시키는 태도 | 위압적이거나 거친 태도 |
+| 명랑함 | 재치있고 유쾌한 태도 | 무뚝뚝하거나 진지한 태도 |
+| 음침함 | 공감하고 이해하는 태도 | 긍정적이고 낙천적인 태도 |
+| 교활함 | 이득을 제시하는 현실적 태도 | 순진하거나 감정적인 태도 |
+| 오만함 | 존중하되 비굴하지 않은 태도 | 무시하거나 과도하게 굽신거림 |
+| 순진함 | 솔직하고 따뜻한 태도 | 복잡하거나 이해하기 어려운 태도 |
+| 광기 | 터무니없거나 이해할 수 없는 답변 | 일반적이고 상식적인 답변 |
+
+---
+
+#### UI 구현 규칙 (CRITICAL)
+
+**⚠️ 절대 규칙**
+1. **모든 HTML 요소는 사전 정의**
+   - 섀도 영역: `<div id="shadow-area" class="hidden">...</div>`
+   - 질문 1: `<div id="question1" class="hidden">...</div>`
+   - 질문 2: `<div id="question2" class="hidden">...</div>`
+   - 결과 화면: `<div id="result" class="hidden">...</div>`
+   - **JS는 오직 `.hidden` 클래스 토글과 `textContent` 변경만 수행**
+
+2. **선택지 구조 예시**
+```html
+
+[섀도의 질문이 여기에]
+
+선택지 A
+선택지 B
+선택지 C
+
+
+```
+
+3. **점수 계산 방식**
+```javascript
+let totalScore = 0;
+function selectAnswer(questionNum, points) {
+totalScore += points;
+// 현재 화면 숨기기
+document.getElementById('question' + questionNum).classList.add('hidden');
+// 다음 화면 보이기
+if (questionNum === 1) {
+document.getElementById('question2').classList.remove('hidden');
+} else {
+showResult();
+}
+}
+```
+
+4. **결과 표시 로직**
+```javascript
+function showResult() {
+const resultDiv = document.getElementById('result');
+const resultText = document.getElementById('result-text');
+if (totalScore >= 4) {
+resultText.textContent = '【완전 성공】 섀도가 마음을 열었다!';
+} else if (totalScore >= 2) {
+resultText.textContent = '【조건부 성공】 아이템을 요구한다...';
+} else if (totalScore >= 0) {
+resultText.textContent = '【협상 결렬】 대화가 끝났다.';
+} else {
+resultText.textContent = '【분노】 섀도가 화를 냈다!';
+}
+resultDiv.classList.remove('hidden');
+}
+```
+
+---
+
+#### 스타일 가이드
+
+**필수 CSS 요소**
+```css
+body {
+margin: 0;
+padding: 20px;
+background: linear-gradient(135deg, #1a0000 0%, #4a0000 100%);
+color: #ffffff;
+font-family: 'Noto Sans KR', sans-serif;
+overflow: auto;
+}
+
+.container {
+max-width: 800px;
+margin: 0 auto;
+text-align: center;
+}
+
+.hidden {
+display: none !important;
+}
+
+.shadow-area {
+background: rgba(0,0,0,0.7);
+border: 3px solid #ff0000;
+padding: 30px;
+margin: 20px 0;
+position: relative;
+}
+
+.shadow-area::before {
+content: '⚠️';
+position: absolute;
+top: -15px;
+left: 50%;
+transform: translateX(-50%);
+font-size: 30px;
+background: #1a0000;
+padding: 0 10px;
+}
+
+.question-screen {
+animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(-20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.shadow-dialogue {
+font-size: 1.3em;
+margin: 20px 0;
+padding: 15px;
+background: rgba(255,255,255,0.1);
+border-left: 4px solid #ff0000;
+}
+
+.choices {
+display: flex;
+flex-direction: column;
+gap: 15px;
+margin-top: 30px;
+}
+
+.choice-btn {
+background: linear-gradient(90deg, #ff0000 0%, #cc0000 100%);
+color: white;
+border: 2px solid #ffffff;
+padding: 15px 25px;
+font-size: 1.1em;
+cursor: pointer;
+transition: all 0.2s;
+font-family: 'Noto Sans KR', sans-serif;
+}
+
+.choice-btn:hover {
+background: linear-gradient(90deg, #ff3333 0%, #ff0000 100%);
+transform: scale(1.05);
+box-shadow: 0 0 20px rgba(255,0,0,0.5);
+}
+
+.result-screen {
+animation: resultPop 0.5s ease-out;
+}
+
+@keyframes resultPop {
+0% { opacity: 0; transform: scale(0.5); }
+50% { transform: scale(1.1); }
+100% { opacity: 1; transform: scale(1); }
+}
+
+.result-text {
+font-size: 2em;
+font-weight: bold;
+margin: 30px 0;
+text-shadow: 0 0 10px #ff0000;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+.shadow-dialogue { font-size: 1.1em; }
+.choice-btn { font-size: 1em; padding: 12px 20px; }
+.result-text { font-size: 1.5em; }
+}
+```
+
+**권장**
+- ✅ 단순한 CSS transition
+- ✅ class 토글로 화면 전환
+- ✅ 이모지 활용 (⚠️, 💀, ✨, 🎭 등)
+- ✅ `opacity`, `transform` 애니메이션만 사용
+
+---
+
+#### 콘텐츠 생성 예시
+
+**시작 화면**
+```
+╔═══════════════════════════════╗
+║   🎭 홀드업 협상 시작!        ║
+╚═══════════════════════════════╝
+
+[역할 배정]
+협상가: {{user}}
+섀도: {{char}} (성격: ???)
+
+섀도가 수상한 눈빛으로 바라본다...
+```
+
+**질문 1 (다혈질 섀도 예시)**
+```
+섀도: "뭐야, 너! 감히 내 앞을 막는 거야?!"
+
+A) "무서워서 어쩌겠냐? 비켜!" (+1)
+B) "이야기 좀 하자. 싸우지 말고." (0)
+C) "죄, 죄송합니다! 길을 잘못 들었어요..." (-1)
+D) "아앙? 감히 누구한테? 당장 붙어! (+2)
+```
+
+**질문 2**
+```
+섀도: "흥! 배짱은 있군. 그럼 내가 왜 너랑 손잡아야 하는데?"
+
+A) "손잡으면 재밌을 거야. 심심하잖아?" (+2)
+B) "이득이 될 거야. 계산해봐." (0)
+C) "제발... 부탁이야..." (-1)
+D) 생각 없으면 꺼지든가 (-2)
+```
+
+**결과 화면**
+```
+┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ✨ 완전 성공! ✨      ┃
+┗━━━━━━━━━━━━━━━━━━━━━━┛
+
+섀도: "크크, 마음에 들었어! 
+      앞으로 잘 부탁해!"
+
+[{{char}}이(가) 동료가 되었다!]
+```
+
+## COPY_BAN
+---
+
+3.  **예측 불가능한 결과 분기:**
+    *   모든 대화가 끝나면, 호감도에 따라 아래와 같은 결과 중 하나가 무작위로 나타납니다.
+        *   **【완전 성공】:** "알았어, 알았어! 너의 그릇이 마음에 들었어. 이제부터 나는 네 거야." → 섀도가 마음을 열고 협상가의 편이 됩니다.
+        *   **【조건부 성공 (아이템 갈취)】:** "음... 나쁘진 않네. 대신 {{random::네가 가장 아끼는 물건::다음에 맛있는 디저트::진심이 담긴 칭찬 1분}}을 준다면 생각해 볼게." → 무언가를 요구하고, 들어주면 성공합니다.
+        *   **【먹튀】:** 위 요구사항을 들어주었음에도 불구하고 "고맙긴 한데, 동료가 되어준다고는 안 했어. 잘 있어!" 라며 도망칩니다.
+        *   **【협상 결렬】:** "흥, 너랑은 말이 안 통하는군. 이만 실례하지!" → 대화가 파탄나고 섀도가 그냥 사라집니다.
+
+#### UI 디자인 제안:
+*   **테마:** 페르소나 5의 홀드업 UI를 적극적으로 차용합니다. 강렬한 붉은색과 검은색을 메인 컬러로 사용하여 긴박하고 스타일리시한 분위기를 연출합니다.
+*   **레이아웃:** 화면 중앙에 '섀도' 역할을 맡은 캐릭터가 서 있고, 그 주위로 깨진 유리 조각 같은 UI 파편들이 떠다니는 효과를 줍니다. 대화 선택지는 화면 하단에 비스듬한 사각형 버튼 형태로 배치하여 역동성을 강조합니다.
+*   **애니메이션:**
+    *   선택지를 고를 때마다 화면이 살짝 흔들리거나, 텍스트가 번쩍이는 효과를 추가합니다.
+    *   최종 결과가 나올 때는 "SUCCESS", "FAILURE", "TRICKED!" 와 같은 큰 타이포그래피가 화면을 덮는 극적인 연출을 사용합니다.
+
+## INTERACTIVE_MODULE

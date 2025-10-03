@@ -161,6 +161,10 @@ categories:
         file: 시뮬봇_이상형월드컵
       - name: "고민 격파 게임"
         file: 걱정두더지잡기
+      - name: "신문 보기"
+        file: 신문
+      - name: "여론조사"
+        file: 여론조사
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
