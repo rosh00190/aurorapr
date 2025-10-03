@@ -165,6 +165,8 @@ categories:
         file: 신문
       - name: "여론조사"
         file: 여론조사
+      - name: "언어학습"
+        file: 언어학습
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
