@@ -167,7 +167,7 @@ categories:
         file: 여론조사
       - name: "언어학습"
         file: 언어학습
-      - name: "[관계] 달성한 업적 보기"
+      - name: "달성한 관계 업적 보기"
         file: 업적시스템
       - name: "char 유언장"
         file: 유언장
