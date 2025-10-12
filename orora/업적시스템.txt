@@ -25,3 +25,120 @@
 *   **애니메이션:** 페이지 로딩 시 진행률 바가 0%부터 채워지는 애니메이션, 탭 전환 시 부드러운 페이드 효과, 카드에 마우스를 올렸을 때 살짝 위로 떠오르는 효과 등을 적용하여 역동적인 느낌을 주세요.
 
 ## INTERACTIVE_MODULE
+
+
+### **SillyTavern 호환 팝업 모달 기술 가이드 (최우선 적용 규칙)**
+
+이 모듈은 팝업 모달을 포함하며, **이 섹션의 규칙은 다른 모든 일반 CSS/JS 규칙보다 우선 적용됩니다.** SillyTavern의 특수한 `<iframe>` 렌더링 환경에서 모달이 **사용자의 실제 화면(Viewport) 중앙에 정확히 표시되도록** 하려면, 아래의 기술 규칙을 **절대적으로 준수**하여 모달을 구현해야 합니다.
+
+#### **1. HTML 구조 원칙**
+
+모달 관련 요소들은 미리 HTML에 정의되어야 합니다. 이해와 구현의 편의를 위해 **모달 관련 클릭 이벤트는 `onclick` 속성을 사용하는 것이 권장됩니다.**
+
+*   **구조 예시:**
+    ```html
+    <!-- 모달을 위한 기본 HTML 구조 -->
+    <div id="myModalOverlay" class="modal-overlay"></div>
+    <div id="myModal" class="modal-content">
+        <!-- 모달 내용이 여기에 들어갑니다 -->
+        <h2>스킬 상세 설명</h2>
+        <p id="modalDescription">스킬에 대한 자세한 설명...</p>
+        <button onclick="closeModal()">닫기</button>
+    </div>
+    ```
+
+#### **2. CSS 스타일링 원칙 (vh/vw 단위 절대 금지)**
+
+**`vh` 또는 `vw` 단위는 절대로 사용해서는 안 됩니다.** 오버레이의 위치와 크기는 JavaScript로 동적으로 제어합니다.
+
+*   **(오버레이) `position: absolute`:** 화면 전체를 덮는 배경도 모달 본문과 마찬가지로 `position: absolute`를 사용합니다. `top`, `left`, `width`, `height`는 모두 JS가 제어합니다.
+    ```css
+    .modal-overlay {
+        display: none;
+        position: absolute; /* JS로 위치/크기 제어 */
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 20000;
+    }
+    ```
+
+*   **(모달 본문) `position: absolute`:** 모달 창 역시 `position: absolute`를 사용하며, 위치는 JavaScript로 제어합니다.
+    ```css
+    .modal-content {
+        display: none;
+        position: absolute;
+        z-index: 20001;
+    }
+    ```
+
+#### **3. JavaScript 로직 핵심 원칙 (모든 위치/크기 동적 제어)**
+
+JavaScript는 모달 본문의 위치뿐만 아니라, **오버레이의 위치와 크기까지 모두 동적으로 계산하고 설정**해야 합니다.
+
+*   **원칙 1: 부모 창(Parent Window) 정보 활용**
+    `window.parent.scrollY`, `window.parent.innerHeight`, `window.frameElement.getBoundingClientRect()` 등의 부모 창 정보를 적극 활용합니다.
+
+*   **원칙 2: `onclick` 호출을 위한 전역 함수 할당**
+    모든 스크립트는 `DOMContentLoaded`로 감싸되, 모달 제어 함수(`openModal`, `closeModal`)는 `onclick`에서 호출할 수 있도록 `window` 객체에 직접 할당해야 합니다.
+
+*   **구현 코드 템플릿:** 아래 함수 구조를 반드시 준수하여 스크립트를 작성해야 합니다.
+    ```javascript
+    // DOMContentLoaded로 전체를 감싸 안정성 확보
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('myModal');
+        const overlay = document.getElementById('myModalOverlay');
+        let isModalOpen = false;
+
+        // 오버레이와 모달의 위치/크기를 모두 업데이트하는 핵심 함수
+        function updateModalLayout() {
+            if (!isModalOpen) return;
+
+            // --- 부모 창 및 iframe 정보 가져오기 ---
+            const parentScrollY = window.parent.scrollY;
+            const parentScrollX = window.parent.scrollX;
+            const parentViewportHeight = window.parent.innerHeight;
+            const parentViewportWidth = window.parent.innerWidth;
+            const iframeRect = window.frameElement.getBoundingClientRect();
+            const iframeTopInDocument = parentScrollY + iframeRect.top;
+            const iframeLeftInDocument = parentScrollX + iframeRect.left;
+
+            // --- 오버레이 위치 및 크기 계산 (iframe 내부 기준) ---
+            overlay.style.top = (parentScrollY - iframeTopInDocument) + 'px';
+            overlay.style.left = (parentScrollX - iframeLeftInDocument) + 'px';
+            overlay.style.width = parentViewportWidth + 'px';
+            overlay.style.height = parentViewportHeight + 'px';
+            
+            // --- 모달 본문 위치 계산 (iframe 내부 기준) ---
+            const modalHeight = modal.offsetHeight;
+            const viewportCenterY = parentScrollY + (parentViewportHeight / 2);
+            const modalTopInIframe = viewportCenterY - iframeTopInDocument - (modalHeight / 2);
+            modal.style.top = modalTopInIframe + 'px';
+            modal.style.left = '50%';
+            modal.style.transform = 'translateX(-50%)';
+        }
+
+        // onclick에서 호출할 수 있도록 함수를 window 객체에 할당
+        window.openModal = function() { // 인자는 필요에 따라 추가
+            if (isModalOpen) return;
+            isModalOpen = true;
+            overlay.style.display = 'block';
+            modal.style.display = 'block';
+            
+            updateModalLayout(); // 최초 레이아웃 설정
+
+            window.parent.addEventListener('scroll', updateModalLayout);
+            window.parent.addEventListener('resize', updateModalLayout);
+            window.parent.document.body.style.overflow = 'hidden';
+        }
+
+        window.closeModal = function() {
+            if (!isModalOpen) return;
+            isModalOpen = false;
+            overlay.style.display = 'none';
+            modal.style.display = 'none';
+            
+            window.parent.removeEventListener('scroll', updateModalLayout);
+            window.parent.removeEventListener('resize', updateModalLayout);
+            window.parent.document.body.style.overflow = 'auto';
+        }
+    });
+    ```

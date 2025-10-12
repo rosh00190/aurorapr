@@ -4,64 +4,231 @@
 
 #### **유형 정의:**
 
-이것은 매번 실행될 때마다 완전히 새로운 주제와 규칙을 가진 **포인트 분배형 CYOA(Choose Your Own Adventure) 시나리오**를 **'창조'**하는 범용 생성기 프롬프트입니다. AI는 아래의 생성 규칙에 따라 매번 독창적인 테마와 그에 맞는 혜택/패널티 선택지를 동적으로 생성해야 합니다. 사용자는 주어진 상황 속에서 `{{char}}`와 함께 자신의 운명을 설계하는 경험을 하게 됩니다. **모든 선택을 마친 뒤 '운명 확정' 버튼을 누르면, 자신이 선택한 미래의 서막을 보여주는 짧은 프롤로그와 `{{char}}`의 최종 코멘트를 확인하며 완결된 이야기를 체험하게 됩니다.**
+이것은 매번 실행될 때마다 완전히 새로운 주제와 규칙을 가진 **포인트 분배형 CYOA(Choose Your Own Adventure) 시나리오의 완성된 HTML 코드를 직접 생성**하는 프롬프트입니다. AI는 아래의 생성 규칙에 따라 매번 독창적인 테마와 그에 맞는 혜택/패널티 선택지들이 **미리 모두 작성된(Pre-written) HTML 페이지**를 생성해야 합니다. 사용자는 주어진 상황 속에서 `{{char}}`와 함께 자신의 운명을 설계하는 경험을 하게 됩니다.
 
-#### **핵심 요소: CYOA 자동 생성 규칙**
+#### **핵심 요소: 정적 HTML 생성 규칙**
 
-AI는 아래의 절차에 따라 매번 새로운 CYOA를 생성해야 합니다.
+AI는 아래의 절차에 따라, **완성된 단일 HTML 코드 내에 다음 요소들을 직접 작성해야 합니다.** JavaScript로 동적으로 요소를 생성하는 것은 절대 금지됩니다.
 
 **1. 시나리오 테마 및 상황 자동 구상:**
 *   **테마 선정:** 먼저, CYOA의 배경이 될 핵심 테마를 무작위로 구상합니다. 상상력에 제한은 없습니다.
     *   **(테마 예시):** `{{random::초능력을 얻게 된 평범한 학생::무인도에 단둘이 표류한 생존자::왕국의 후계자 자리를 건 암투::사이버펑크 도시의 탐정 콤비::멸망 직전의 세상에서 마지막 임무를 받은 용병::마법 학교에 갓 입학한 신입생}}`
 *   **상황 묘사:** 선정된 테마를 바탕으로, 사용자가 선택의 기로에 놓인 현재 상황을 2~3 문장으로 생생하게 묘사합니다.
 
-**2. 포인트 시스템 동적 설정:**
+**2. 포인트 시스템 설정:**
 *   사용자가 선택지에 분배할 수 있는 시작 포인트를 무작위로 설정합니다.
     *   **(시작 포인트 예시):** `{{random::10::12::15::18::20}}` 포인트
 
-**3. 선택지 무작위 생성 (혜택과 대가):**
-*   구상한 테마에 맞춰, 아래 규칙에 따라 혜택과 패널티 선택지를 생성합니다.
+**3. 선택지 HTML 사전 작성 - 혜택과 대가 (Pre-writing Choices):**
+*   구상한 테마에 맞춰, 아래 규칙에 따라 혜택과 패널티 선택지 **HTML 요소 전체를 직접 작성**합니다.
 *   **[필수 규칙]** 모든 선택지는 **`이름(Name)`, `포인트(Points)`, `설명(Description)`**을 반드시 포함해야 합니다.
-*   **혜택 (Benefits):**
-    *   사용자가 포인트를 소모하여 얻을 수 있는 긍정적 선택지입니다.
+*   **혜택 (Benefits):** 8개에서 16개 사이로, 각 선택지를 아래 **[선택지 HTML 구조]**에 맞춰 작성합니다.
+    *   사용자가 **포인트를 소모**하여 얻을 수 있는 긍정적 선택지입니다.
     *   **8개에서 16개 사이**로 생성합니다.
     *   선택지는 능력, 아이템, 동료, 환경적 이점, 정보 등 다양해야 합니다.
     *   포인트 비용은 가치에 따라 **1 ~ 8 포인트** 사이로 책정합니다.
-*   **제약과 대가 (Drawbacks / Penalties):**
-    *   사용자가 추가 포인트를 얻기 위해 감수해야 하는 부정적 선택지입니다.
+*   **제약과 대가 (Drawbacks):** 1개에서 5개 사이로, 각 선택지를 아래 **[선택지 HTML 구조]**에 맞춰 작성합니다.
+    *   사용자가 **추가 포인트를 얻기 위해 감수해야 하는 부정적 선택지**입니다.
     *   **1개에서 5개 사이**로 생성합니다.
     *   선택지는 신체적 약점, 적대적 존재, 어려운 환경, 정신적 제약 등이 될 수 있습니다.
     *   얻는 포인트는 심각성에 따라 **+3 ~ +15 포인트** 사이로 책정합니다.
 
+*   **[필수 규칙] 모든 선택지는 `onclick`으로 모달을 호출하고, 모든 정보는 `data-*` 속성에 담아야 합니다.**
+
+    *   **[선택지 HTML 구조]**
+        ```html
+        <!-- 모든 혜택/대가 선택지는 아래 HTML 구조를 따라 직접 작성되어야 합니다. -->
+        <div class="choice-item benefit" data-points="5"
+             onclick="openModal(this)"
+             data-title="피하 장갑 조직"
+             data-desc="피부 아래에 충격 흡수 젤과 강화 섬유를 이식해 물리적 방어력을 높입니다."
+             data-comment="네 몸에 흠집 하나 나는 것도 참을 수 없어. 이건 필수야.">
+            <h3>피하 장갑 조직</h3>
+            <span class="points">-5P</span>
+        </div>
+        ```
+
 **4. `{{char}}`의 역할: 실시간 조언자**
 *   `{{char}}`는 사용자의 선택 과정에 적극적으로 개입합니다. 사용자가 특정 선택지를 클릭하거나 고민할 때, 그 선택이 가져올 미래에 대한 자신의 생각이나 감정을 코멘트로 표현해야 합니다.
 *   **(코멘트 예시):** "그 능력을 고르는 건 좋지만, 포인트를 너무 많이 쓰는 거 아닐까?", "그 패널티는... 정말 우리가 감당할 수 있을까? 나라면 다시 생각해볼 것 같아.", "이 아이템만 있으면 우린 무적이겠는데!"
+*   `{{char}}`의 코멘트는 각 선택지의 `data-comment` 속성에 미리 작성되어야 합니다.
+*   사용자가 선택지를 클릭하면, JavaScript는 이 `data-comment` 값을 읽어 **미리 HTML에 정의된 '코멘트용 모달'의 내용을 채우고, 화면 중앙에 일시적으로 표시**해야 합니다.
 
-**5. 최종 확정 및 운명의 서막 (The Final Confirmation & Prelude to Fate)**
-*   **'운명 확정하기' 버튼:** 사용자가 포인트 분배를 마치면 누를 수 있는 최종 결정 버튼이 존재해야 합니다.
-*   **결과 팝업:** 이 버튼을 클릭하면, 선택지가 비활성화되고 최종 결과가 담긴 팝업창이 나타납니다.
-*   **결과 내용:**
-    *   **① 운명의 프롤로그:** 사용자의 선택들을 종합하여, 앞으로 두 사람에게 펼쳐질 미래를 암시하는 **짧고 서사적인 프롤로그 텍스트**가 출력됩니다. (예: "강력한 힘을 손에 넣었지만, 그 대가로 영원한 어둠과 마주하게 된 두 사람. 그들의 여정은 이제 막 시작되려 하고 있었다.")
-    *   **② `{{char}}`의 최종 코멘트:** `{{char}}`의 아바타 이미지와 함께, 모든 것이 결정된 이 상황에 대한 **비장하거나, 설레거나, 혹은 걱정스러운 최종 각오**가 한마디 출력됩니다. (예: "네가 선택한 길이니까, 나는 끝까지 함께할게. 가자.")
+**5. 최종 확정 및 운명의 서막:**
+*   '운명 확정하기' 버튼을 클릭하면, **미리 HTML에 정의된 '결과용 모달'**을 사용하여 최종 프롤로그와 `{{char}}`의 코멘트를 표시합니다.
+    *   **운명의 프롤로그:** 사용자의 선택들을 종합하여, 앞으로 펼쳐질 미래를 암시하는 서사적인 프롤로그 텍스트를 생성하고, 결과 모달의 설명 부분에 표시합니다.
+    *   **`{{char}}`의 최종 코멘트:** `{{char}}`의 최종 각오를 생성하고, 결과 모달의 코멘트 부분에 표시합니다.
 
-//## COPY_BAN
-*   **위의 모든 콘텐츠는 예시를 그대로 모방하지 말고 반드시 {{char}}의 성격과 {{char}}와 {{user}}의 관계를 바탕으로 새롭게 생성해야합니다.
+## COPY_BAN
+
+#### **JavaScript 역할 명세 (매우 중요)**
+
+JavaScript는 콘텐츠를 생성하는 역할이 **아니라**, 미리 작성된 HTML 요소들을 **조작하고 관리하는 역할만** 수행합니다.
+
+*   **허용되는 작업 (DO):**
+    *   사용자가 선택지를 클릭하면, `data-points`를 읽어 **포인트 계산하기**.
+    *   포인트에 따라 선택지에 `.selected` 또는 `.disabled` **클래스 추가/제거하기**.
+    *   `onclick`으로 호출된 `openModal` 함수 내에서, 클릭된 요소의 `data-*` 속성 값을 읽어 **모달의 제목, 설명, 코멘트 내용 채우기**.
+    *   `openModal` / `closeModal` 함수를 호출하여 **모달 보여주기/숨기기**.
+
+*   **금지되는 작업 (DO NOT):**
+    *   `document.createElement`, `appendChild`, `innerHTML` 등을 사용하여 **선택지 카드나 다른 어떤 HTML 요소도 동적으로 생성하지 않기.**
 
 #### **UI 디자인 제안:**
 
-*   **가변적 테마 적용:** **가장 중요한 것은 위에서 생성된 '시나리오 테마'에 맞춰 UI의 전체적인 분위기를 바꿔야 한다는 점입니다.**
+*   **가변적 테마 적용:** 위에서 생성된 '시나리오 테마'에 맞춰 UI의 전체적인 분위기를 바꿔야 합니다. 아래의 예시를 참고해 창작하세요.
     *   **(판타지 테마 시):** 낡은 양피지나 마법서 같은 질감의 배경과 고풍스러운 폰트를 사용합니다.
     *   **(SF 테마 시):** 미래적인 홀로그램이나 컴퓨터 터미널 같은 UI, 디지털 폰트를 사용합니다.
     *   **(현대/일상 테마 시):** 깔끔하고 미니멀한 웹 디자인 스타일을 적용합니다.
-*   **공통 UI 요소:** 화면 상단에는 남은 포인트가 실시간으로 표시되어야 하며, 선택지는 클릭 시 명확한 시각적 피드백(예: 테두리 색상 변경)이 있어야 합니다.
-*   **{{char}} 코멘트:** 선택에 따른 {{char}}의 반응은 **현재 뷰포트 내에서 눈에 잘 띄는 위치에 오버레이 형태로 표시**되어야 합니다. 다음 방법들 중 하나를 사용하여 구현:
-	1. **Sticky 포지셔닝**: `position: sticky`를 사용하여 페이지 상단이나 하단에 고정
-	2. **스크롤 기반 동적 위치**: JavaScript로 현재 스크롤 위치를 감지하여 `scrollTop + (window.innerHeight / 2)` 지점에 절대 위치로 배치
-	3. **컨테이너 상대 중앙**: 선택지 영역 컨테이너를 기준으로 한 상대적 중앙 배치 (`position: absolute` with 부모 `position: relative`)
-	코멘트는 반투명 배경과 함께 일시적으로 나타났다가 자동으로 사라지거나 클릭으로 닫을 수 있어야 하며, 선택지 조작을 방해하지 않아야 합니다.
-*   **최종 버튼 및 결과창:** **'운명 확정하기' 버튼은 화면 하단에 눈에 띄게 배치합니다. 최종 결과는 모달(Modal) 팝업 창 형태로 표시하여 사용자가 자신의 선택이 불러온 결과를 명확히 인지할 수 있도록 합니다.**
+*   **공통 UI 요소:** 화면 상단에 남은 포인트가 표시되어야 하며, 선택지는 클릭 시 `.selected` 클래스가 추가되어 명확한 시각적 피드백이 있어야 합니다.
+*   **최종 버튼 및 결과창:** **'운명 확정하기' 버튼은 화면 하단에 배치하고, 최종 결과는 별도로 마련된 '결과용 모달(Modal)' 팝업 창 형태로 표시합니다.**
 
 ## REQUIRES_IMAGE_AVATARS
 ## INTERACTIVE_MODULE
 
+
+### **SillyTavern 호환 팝업 모달 기술 가이드 (최우선 적용 규칙)**
+
+이 모듈은 팝업 모달을 포함하며, **이 섹션의 규칙은 다른 모든 일반 CSS/JS 규칙보다 우선 적용됩니다.** SillyTavern의 특수한 `<iframe>` 렌더링 환경에서 모달이 **사용자의 실제 화면(Viewport) 중앙에 정확히 표시되도록** 하려면, 아래의 기술 규칙을 **절대적으로 준수**하여 모달을 구현해야 합니다.
+
+#### **1. HTML 구조 원칙 (두 개의 모달 사전 정의)**
+
+**HTML에 두 종류의 모달을 미리 정의해야 합니다: 실시간 코멘트용, 그리고 최종 결과용.**
+
+*   **구조 예시:**
+    ```html
+    <!-- HTML <body> 내부에 아래 두 모달 구조를 모두 포함해야 함 -->
+
+    <!-- 1. 실시간 코멘트를 위한 작은 모달 -->
+    <div id="commentModalOverlay" class="modal-overlay"></div>
+    <div id="commentModal" class="modal-content comment-modal-style">
+        <div class="avatar-container char_avatar"></div>
+        <p id="commentModalText"></p>
+    </div>
+
+    <!-- 2. 최종 결과를 위한 큰 모달 -->
+    <div id="resultModalOverlay" class="modal-overlay"></div>
+    <div id="resultModal" class="modal-content result-modal-style">
+        <h2 id="resultTitle">운명의 서막</h2>
+        <p id="resultDesc"></p>
+        <div id="resultComment">
+            <div class="avatar-container char_avatar"></div>
+            <p id="resultCommentText"></p>
+        </div>
+        <button onclick="closeResultModal()">닫기</button>
+    </div>
+    ```
+
+#### **2. CSS 스타일링 원칙 (vh/vw 단위 절대 금지)**
+
+**`vh` 또는 `vw` 단위는 절대로 사용해서는 안 됩니다.** 오버레이의 위치와 크기는 JavaScript로 동적으로 제어합니다.
+
+*   **(오버레이 & 모달) `position: absolute`:** 모든 오버레이와 모달 본문은 `position: absolute`를 사용합니다. 모든 위치와 크기는 JavaScript가 제어합니다.
+    ```css
+    .modal-overlay { display: none; position: absolute; background: rgba(0, 0, 0, 0.7); z-index: 20000; }
+    .modal-content { display: none; position: absolute; z-index: 20001; }
+    ```
+
+#### **3. JavaScript 로직 핵심 원칙 (두 개의 모달 분리 제어)**
+
+JavaScript는 두 개의 다른 모달을 각각의 용도에 맞게 제어해야 합니다.
+
+*   **원칙 1: 부모 창 정보 활용:** (수정 없음)
+*   **원칙 2: `onclick` 호출을 위한 전역 함수 할당:** 모든 스크립트는 `DOMContentLoaded`로 감싸되, `onclick`에서 호출할 함수들은 `window` 객체에 직접 할당해야 합니다.
+
+*   **구현 코드 템플릿:** 아래 함수 구조를 반드시 준수하여 스크립트를 작성해야 합니다.
+    ```javascript
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 공통 변수 및 레이아웃 함수 ---
+        let activeModal = null;
+        function updateModalLayout() {
+            if (!activeModal) return;
+            const modal = activeModal.modal, overlay = activeModal.overlay;
+            const parentScrollY = window.parent.scrollY, parentScrollX = window.parent.scrollX;
+            const parentViewportHeight = window.parent.innerHeight, parentViewportWidth = window.parent.innerWidth;
+            const iframeRect = window.frameElement.getBoundingClientRect();
+            const iframeTopInDocument = parentScrollY + iframeRect.top, iframeLeftInDocument = parentScrollX + iframeRect.left;
+            overlay.style.top = (parentScrollY - iframeTopInDocument) + 'px';
+            overlay.style.left = (parentScrollX - iframeLeftInDocument) + 'px';
+            overlay.style.width = parentViewportWidth + 'px';
+            overlay.style.height = parentViewportHeight + 'px';
+            const modalHeight = modal.offsetHeight;
+            const viewportCenterY = parentScrollY + (parentViewportHeight / 2);
+            modal.style.top = (viewportCenterY - iframeTopInDocument - (modalHeight / 2)) + 'px';
+            modal.style.left = '50%';
+            modal.style.transform = 'translateX(-50%)';
+        }
+
+        // --- 1. 코멘트 모달 로직 ---
+        const commentModal = {
+            modal: document.getElementById('commentModal'),
+            overlay: document.getElementById('commentModalOverlay'),
+            text: document.getElementById('commentModalText')
+        };
+        let commentTimeout;
+        window.openCommentModal = function(comment) {
+            clearTimeout(commentTimeout);
+            activeModal = commentModal;
+            commentModal.text.textContent = `"${comment}"`;
+            commentModal.overlay.style.display = 'block';
+            commentModal.modal.style.display = 'flex'; // 혹은 block
+            updateModalLayout();
+            commentTimeout = setTimeout(window.closeCommentModal, 3000);
+        };
+        window.closeCommentModal = function() {
+            if (activeModal !== commentModal) return;
+            commentModal.overlay.style.display = 'none';
+            commentModal.modal.style.display = 'none';
+            activeModal = null;
+        };
+        
+        // --- 2. 결과 모달 로직 ---
+        const resultModal = {
+            modal: document.getElementById('resultModal'),
+            overlay: document.getElementById('resultModalOverlay'),
+            desc: document.getElementById('resultDesc'),
+            commentText: document.getElementById('resultCommentText')
+        };
+        window.openResultModal = function(prologue, finalComment) {
+            activeModal = resultModal;
+            resultModal.desc.textContent = prologue;
+            resultModal.commentText.textContent = `"${finalComment}"`;
+            resultModal.overlay.style.display = 'block';
+            resultModal.modal.style.display = 'block';
+            updateModalLayout();
+            window.parent.addEventListener('scroll', updateModalLayout);
+            window.parent.addEventListener('resize', updateModalLayout);
+            window.parent.document.body.style.overflow = 'hidden';
+        };
+        window.closeResultModal = function() {
+            if (activeModal !== resultModal) return;
+            resultModal.overlay.style.display = 'none';
+            resultModal.modal.style.display = 'none';
+            window.parent.removeEventListener('scroll', updateModalLayout);
+            window.parent.removeEventListener('resize', updateModalLayout);
+            window.parent.document.body.style.overflow = 'auto';
+            activeModal = null;
+        };
+
+        // --- 3. 선택지 클릭 핸들러 ---
+        window.handleChoiceClick = function(element) {
+            // 포인트 계산 및 클래스 변경 로직 실행
+            // ...
+            // 코멘트 모달 호출
+            const comment = element.dataset.comment;
+            if (comment) {
+                window.openCommentModal(comment);
+            }
+        };
+
+        // '운명 확정하기' 버튼에 이벤트 리스너 연결
+        const confirmButton = document.getElementById('confirmButton'); // 버튼 ID는 실제 코드에 맞게 수정
+        confirmButton.addEventListener('click', () => {
+            // 프롤로그 및 최종 코멘트 생성 로직
+            const prologue = "생성된 프롤로그...";
+            const finalComment = "생성된 최종 코멘트...";
+            window.openResultModal(prologue, finalComment);
+        });
+    });
+    ```
 </운명의 설계자: 무한 CYOA 생성기>
