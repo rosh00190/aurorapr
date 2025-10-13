@@ -5,17 +5,17 @@ categories:
     name: "🖥️ 플랫폼/서비스"
     prompt: "'플랫폼/서비스 시뮬레이션'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "우리FLIX"
+      - name: "🎬 우리FLIX"
         file: 우리FLIX
-      - name: "오로라 클라우드"
+      - name: "☁️오로라 클라우드"
         file: 오로라클라우드
-      - name: "【판매상품 - char】"
+      - name: "🛒【판매상품 - char】"
         file: 렌탈상품
-      - name: "배달 음식 리뷰"
+      - name: "🍱 배달 음식 리뷰"
         file: 배달리뷰
-      - name: "관계 통장"
+      - name: "💳 관계 통장"
         file: 우리관계통장
-      - name: "언어학습"
+      - name: "🎓 언어학습"
         file: 언어학습
 
   # '현실 컨텐츠 패러디' 카테고리
@@ -23,13 +23,13 @@ categories:
     name: "🌌 현실 몰입형"
     prompt: "'현실 모방형'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "계절 카페 【네게】"
+      - name: "☕ 계절 카페 【네게】"
         file: 계절카페
-      - name: "빗소리 머금은 창가: 오늘의 감정 스케치"
+      - name: "🌧️ 빗소리 머금은 창가: 오늘의 감정 스케치"
         file: 비창가스케치
-      - name: "긴급 기자회견"
+      - name: "🎤 긴급 기자회견"
         file: 긴급기자회견
-      - name: "아파트 게시판"
+      - name: "🏢 아파트 게시판"
         file: 실시간_아파트게시판
       - name: "인생네컷 포토부스"
         file: 인생네컷
@@ -43,20 +43,20 @@ categories:
         file: 마음탐구보고서
       - name: "비밀 장바구니 훔쳐보기"
         file: 장바구니훔쳐보기
-      - name: "char 검색 기록"
+      - name: "🔍 char 검색 기록"
         file: 검색기록
         #가끔 터미널이 안뜨네
       - name: "마음 해킹 ACCESS DENIED: HEART_DRIVE"
         file: 마음해킹
-      - name: "성격 스탯 재분배 시뮬레이터"
+      - name: "⚡ 성격 스탯 재분배 시뮬레이터"
         file: 성격스탯재분배
-      - name: "char의 지옥 재판"
+      - name: "👿 char의 지옥 재판"
         file: 지옥재판
       - name: "char 유언장"
         file: 유언장
       - name: "char 성분 분석"
         file: 성분분석표
-      - name: "char 패치노트"
+      - name: "🛠️ char 패치노트"
         file: 패치노트
 
   # '관계 진단' 카테고리
@@ -64,13 +64,13 @@ categories:
     name: "📊 관계 진단"
     prompt: "'관계 진단'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "관계 영역 모의고사"
+      - name: "🧾 관계 영역 모의고사"
         file: 수능모의고사
       - name: "우리의 하루 리포트: 타임라인 보드"
         file: 우리하루리포트
       - name: "관계 가이드라인 설정하기"
         file: 관계가이드라인설정
-      - name: "연애 재난 생존수칙"
+      - name: "🚨 연애 재난 생존수칙"
         file: 연애재난수칙
       - name: "관계 표준 계약서"
         file: 관계표준계약서
@@ -82,7 +82,7 @@ categories:
         file: 거짓말탐지기NSFW
       - name: "싱크로율 테스트"
         file: 싱크로율
-      - name: "달성한 관계 업적 보기"
+      - name: "🏆 달성한 관계 업적 보기"
         file: 업적시스템
 
   # '상황극' 카테고리
@@ -95,7 +95,7 @@ categories:
         file: CYOA
       - name: "관계 특성 조합"
         file: 관계특성조합
-      - name: "평행우주 관측기 【OVERLAP】"
+      - name: "🌀 평행우주 관측기 【OVERLAP】"
         file: 평행우주_오버랩
 
   # '장르 IP 패러디' 카테고리
@@ -107,7 +107,7 @@ categories:
         file: 포켓몬_배틀
       - name: "어몽어스"
         file: 테스트어몽어스
-      - name: "동물의 숲 여권보기"
+      - name: "🍃 동물의 숲 여권보기"
         file: 동물의숲_여권
 
   # '게임' 카테고리
@@ -115,15 +115,15 @@ categories:
     name: "🎮 게임"
     prompt: "'게임'의 세부 컨텐츠를 선택해주세요."
     items:
-      - name: "가위바위보"
+      - name: "✊ 가위바위보"
         file: 가위바위보
-      - name: "틱택토"
+      - name: "⭕❌ 틱택토"
         file: 틱택토
-      - name: "스마트폰 비번 해제"
+      - name: "🔐 스마트폰 비번 해제"
         file: 비번해제
-      - name: "추억 카드 맞추기"
+      - name: "🃏 추억 카드 맞추기"
         file: 추억카드맞추기
-      - name: "고민 격파 게임"
+      - name: "💥 고민 격파 게임"
         file: 걱정두더지잡기
 
   # '창작' 카테고리
@@ -136,7 +136,7 @@ categories:
       - name: "즉흥 동화 만들기"
         file: 즉흥동화
 
-  # '현실 컨텐츠 패러디' 카테고리
+  # '전용구역' 카테고리
   - id: RestrictedZone
     name: "📖 전용구역"
     prompt: "'특정 조건'이 있을때 사용가능한 컨텐츠입니다.."
@@ -166,14 +166,14 @@ categories:
       - name: "도플갱어 판독 게임"
         file: 도플갱어
         #스크롤이...
-      - name: "char 뇌내 회의장 엿보기"
+      - name: "🧠 char 뇌내 회의장 엿보기"
         file: 뇌내회의록
         #스포방지랑 이미지크기 조절...
       - name: "【시뮬봇】 이상형 월드컵"
         file: 시뮬봇_이상형월드컵
       - name: "신문 보기"
         file: 신문
-      - name: "여론조사"
+      - name: "📊 여론조사"
         file: 여론조사
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
