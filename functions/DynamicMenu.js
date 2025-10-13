@@ -611,9 +611,13 @@ ${mainIfClauses.join(' | \n    ')}
             logger.debug(`언어를 [${fixedlang}](으)로 치환합니다.`);
             finalPrompt = finalPrompt.replaceAll(/Korean/gi, fixedlang);
             finalPrompt = finalPrompt.replaceAll(/English/gi, fixedlang);
+            finalPrompt = finalPrompt.replaceAll('영어', fixedlang);
+            finalPrompt = finalPrompt.replaceAll('일본어', fixedlang);
             finalPrompt = finalPrompt.replaceAll('한국어', fixedlang);
             finalPrompt = finalPrompt.replaceAll('한글', fixedlang);
+            finalPrompt = finalPrompt.replaceAll('日本語', fixedlang);
             finalPrompt = finalPrompt.replaceAll('简体中文', fixedlang);
+            finalPrompt = finalPrompt.replaceAll('중국어', fixedlang);
             finalPrompt = finalPrompt.replaceAll('中文', fixedlang);
         }
 
