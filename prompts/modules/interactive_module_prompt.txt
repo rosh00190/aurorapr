@@ -1,9 +1,20 @@
 //## INTERACTIVE_MODULE
 (필수 준수: SillyTavern 환경 기술 명세)
-이 미니극장은 상호작용이 핵심입니다. 생성될 코드는 일반 브라우저가 아닌 특수한 `<iframe>` 환경(SillyTavern)에서 실행되므로, 당신의 일반적인 웹 지식보다 아래 규칙을 최우선으로 따라야 합니다. 이 규칙을 무시하면 코드가 100% 깨지거나 작동하지 않습니다.
+이 컨텐츠는 상호작용이 핵심입니다. 생성될 코드는 일반 브라우저가 아닌 특수한 `<iframe>` 환경(SillyTavern)에서 실행되므로, 당신의 일반적인 웹 지식보다 아래 규칙을 최우선으로 따라야 합니다. 이 규칙을 무시하면 코드가 100% 깨지거나 작동하지 않습니다. 반드시 아래 지시사항을 따르세요.
 
-*   JS 실행 규칙: 모든 `<script>` 코드는 반드시 `document.addEventListener('DOMContentLoaded', () => { ... });` 로 감싸야 합니다.
-    *   이유: HTML 로딩이 끝나기 전에 스크립트가 실행되어 발생하는 치명적인 오류를 막기 위함입니다.
-*   JS 이벤트 규칙: 클릭 이벤트는 HTML에 `onclick`을 쓰지 말고, 반드시 JS 파일 내에서 `element.addEventListener('click', ...)` 방식으로 연결해야 합니다.
-    *   이유: 이 방식만이 해당 환경에서 안정적인 작동을 보장합니다.
+*   **Two Core Principles of Scripting (Prioritize Stability):**
 
+    *   **Principle 1: Manipulate 'Pre-defined Elements'. (Primary Rule)**
+        *   **Instruction:** Define all UI elements (popups, tab content, etc.) within the **initial HTML structure** (utilize `display: none;`). JavaScript's role should be limited to changing styles or classes of these pre-existing elements to show/hide them.
+        *   **Reason:** This is the most stable and predictable method in the SillyTavern environment, preventing errors inherent to dynamic DOM manipulation.
+
+    *   **Principle 2: Use 'Dynamic Generation' as a Last Resort. (Exception Rule)**
+        *   **Instruction:** Use dynamic DOM generation methods (`createElement`, `innerHTML`, etc.) **ONLY IF** implementing via 'Principle 1' is clearly inefficient or impossible, such as when **sequentially appending content like chat logs** or redrawing the entire scene.
+
+*   **Rule for using `DOMContentLoaded`:**
+
+    *   **For most stable codes following 'Principle 1', DO NOT use `DOMContentLoaded`.** Since your script is placed at the very end of the `<body>` tag, this safeguard is unnecessary and may cause unexpected errors due to race conditions.
+    *   **ONLY for complex codes inevitably using dynamic DOM generation under 'Principle 2', you MUST use** `document.addEventListener('DOMContentLoaded', () => { ... });` as a safeguard to prevent timing errors.
+
+*   **JS Event Rule:**
+    *   Do NOT use `onclick` in HTML for click events. You MUST attach them within JS using `element.addEventListener('click', ...)`. Only this method guarantees stable operation in this environment.

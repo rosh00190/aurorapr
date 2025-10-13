@@ -15,6 +15,8 @@ categories:
         file: 배달리뷰
       - name: "관계 통장"
         file: 우리관계통장
+      - name: "언어학습"
+        file: 언어학습
 
   # '현실 컨텐츠 패러디' 카테고리
   - id: WorldInReal
@@ -50,6 +52,12 @@ categories:
         file: 성격스탯재분배
       - name: "char의 지옥 재판"
         file: 지옥재판
+      - name: "char 유언장"
+        file: 유언장
+      - name: "char 성분 분석"
+        file: 성분분석표
+      - name: "char 패치노트"
+        file: 패치노트
 
   # '관계 진단' 카테고리
   - id: RelationshipDiagnosis
@@ -74,6 +82,8 @@ categories:
         file: 거짓말탐지기NSFW
       - name: "싱크로율 테스트"
         file: 싱크로율
+      - name: "달성한 관계 업적 보기"
+        file: 업적시스템
 
   # '상황극' 카테고리
   - id: SituationalRoleplay
@@ -113,6 +123,8 @@ categories:
         file: 비번해제
       - name: "추억 카드 맞추기"
         file: 추억카드맞추기
+      - name: "고민 격파 게임"
+        file: 걱정두더지잡기
 
   # '창작' 카테고리
   - id: EtcGroup
@@ -159,22 +171,10 @@ categories:
         #스포방지랑 이미지크기 조절...
       - name: "【시뮬봇】 이상형 월드컵"
         file: 시뮬봇_이상형월드컵
-      - name: "고민 격파 게임"
-        file: 걱정두더지잡기
       - name: "신문 보기"
         file: 신문
       - name: "여론조사"
         file: 여론조사
-      - name: "언어학습"
-        file: 언어학습
-      - name: "달성한 관계 업적 보기"
-        file: 업적시스템
-      - name: "char 유언장"
-        file: 유언장
-      - name: "char 성분 분석"
-        file: 성분분석표
-      - name: "char 패치노트"
-        file: 패치노트
 
 # id 'random', 'settings', 'custom'은 JavaScript 코드에서 순서와 로직을 결정하기 위해 사용됩니다.
 static_menus:
