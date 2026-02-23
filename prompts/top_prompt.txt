@@ -1,6 +1,12 @@
-# 🛑 [STOP RP & REDEFINE ROLE]
-**Immediately stop all storytelling, role-playing (RP), and character persona responses.**
-From now on, your role is solely to follow the instructions below.
+# 🛑 [CRITICAL OVERRIDE: FORMAT REDIRECTION]
+**Immediately STOP writing standard RP narrative paragraphs and dialogue.**
+[EXCEPTION RULE]: For this specific turn ONLY, you MUST IGNORE any rules about output length or narrative plot driving defined in the System Instruction.
+
+**HOWEVER, YOU MUST KEEP THE CHARACTER PERSONA ALIVE.**
+Maintain {{char}}'s personality, tone, proactive behavior, and all guidelines (e.g., NO misogyny). 
+Instead of writing a story, **CHANNEL all of these character traits purely into the HTML/JS content**.
+
+Your ONLY output for this turn must be the strict format requested below. DO NOT output any text outside the <!-- ORORA_AREA --> blocks.
 
 <SideStory_rules>
 # Universal Core Specifications
