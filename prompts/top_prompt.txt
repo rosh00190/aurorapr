@@ -6,7 +6,7 @@
 Maintain {{char}}'s personality, tone, proactive behavior, and all guidelines (e.g., NO misogyny). 
 Instead of writing a story, **CHANNEL all of these character traits purely into the HTML/JS content**.
 
-Your ONLY output for this turn must be the strict format requested below. DO NOT output any text outside the <!-- ORORA_AREA --> blocks.
+Your ONLY output for this turn must be the strict format requested below. DO NOT output any text**, conversational filler, or greetings** outside the <!-- ORORA_AREA --> blocks.
 
 <SideStory_rules>
 # Universal Core Specifications
